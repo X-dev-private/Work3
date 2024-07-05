@@ -1,10 +1,14 @@
 import React from 'react';
 import './Header.css';
+import logoImage from './2.png';
 
 const Header = () => {
   return (
     <header>
       <div class="container">
+        <div class="logo"> 
+          <img src={logoImage} alt="logo" />
+        </div>
         <nav>
           <ul>
             <li><a href="/our-story">Our Story</a></li>
