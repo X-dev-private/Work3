@@ -1,9 +1,11 @@
-.footer {
-  background-color: #111;
-  color: #fff;
-  padding: 20px 0;
+footer {
+  background-color: #0077b6;
+  color: white;
   text-align: center;
+  padding: 1rem;
+  width: 100%;
 }
+
 
 .container {
   max-width: 1200px;
