@@ -1,10 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.css';
 import logoImage from './2.png';
+import SwitchBotton from '../../components/swichBotton/SwitchBotton';
 
 const Header = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isSwitched, setIsSwitched] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+      if (window.scrollY > 5) {
+        setIsScrolled(true);
+        setIsSwitched(!isSwitched);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header>
+    <header
+      className={`header ${isScrolled ? 'scrolled' : ''}`}
+      style={{
+        transform: isScrolled ? 'scale(0.5) translateX(-50%)' : 'none',
+        borderRadius: isScrolled ? '50%' : '0',
+      }}
+    >
       <div class="logo"> 
         <img src={logoImage} alt="logo" />
       </div>
@@ -17,6 +44,9 @@ const Header = () => {
             <li><a href="/more">More</a></li>
           </ul>
         </nav>
+      </div>
+      <div className="header-botton">
+        <SwitchBotton switched={isSwitched} scrolled={isScrolled} /> {/* Pass the scrolled state as a prop */}
       </div>
     </header>
   );

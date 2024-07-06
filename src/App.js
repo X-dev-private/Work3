@@ -6,12 +6,17 @@ import LandPage from './pages/LandPage';
 function App() {
   return (
     <div className="App">
-      <div>
-        <Header />
-          <main>
-            <LandPage />
-          </main>
-        <Footer />
+      <div className='LandPage'>
+        <div>
+          <Header />
+            <main>
+              <LandPage />
+            </main>
+          <Footer />
+        </div>
+      </div>
+      <div className='AppPage'>
+
       </div>
     </div>
   );
