@@ -1,8 +1,10 @@
 header {
-  background-color: #0077b6;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+  background-color: transparent;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .container {
@@ -11,15 +13,10 @@ header {
   padding: 0 20px;
 }
 
-.logo {
-  margin-left: auto; /* Adicionado */
-  transform: scale(4);
-}
-
-.logo img {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+.header-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
 nav ul {
@@ -62,4 +59,14 @@ nav a:hover {
 .fab {
   font-size: 18px;
 }
-  
+
+.logo {
+  margin-left: auto;
+  transform: scale(4);
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}

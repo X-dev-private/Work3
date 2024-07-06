@@ -5,10 +5,10 @@ import logoImage from './2.png';
 const Header = () => {
   return (
     <header>
+      <div class="logo"> 
+        <img src={logoImage} alt="logo" />
+      </div>
       <div class="container">
-        <div class="logo"> 
-          <img src={logoImage} alt="logo" />
-        </div>
         <nav>
           <ul>
             <li><a href="/our-story">Our Story</a></li>
@@ -17,14 +17,6 @@ const Header = () => {
             <li><a href="/more">More</a></li>
           </ul>
         </nav>
-        <div class="social">
-          <a target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-twitter"></i>
-          </a>
-        </div>
       </div>
     </header>
   );
