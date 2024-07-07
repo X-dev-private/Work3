@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import './SwitchButton.css';
 
-const SwitchBotton = () => {
-  const [switched, setSwitched] = useState(false);
+const SwitchButton = () => {
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    setSwitched(!switched);
+    navigate('/App');
   };
 
   const handleScroll = () => {
-    if (window.scrollY > 5) { 
+    if (window.scrollY > 10) { 
       setScrolled(true);
     } else {
       setScrolled(false);
@@ -25,10 +26,10 @@ const SwitchBotton = () => {
   }, []);
 
   return (
-    <button className={`switch-button ${switched ? 'switched' : ''} ${scrolled ? 'scrolled' : ''}`} onClick={handleClick}>
-      {switched ? 'Switched On' : 'Switched Off'}
+    <button className={`switch-button ${scrolled ? 'scrolled' : ''}`} onClick={handleClick}>
+      {scrolled ? '' : 'Open Work3'}
     </button>
   );
 };
 
-export default SwitchBotton;
+export default SwitchButton;

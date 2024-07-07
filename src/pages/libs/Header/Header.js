@@ -4,6 +4,7 @@ import logoImage from './2.png';
 import SwitchBotton from '../../components/swichBotton/SwitchButton';
 
 const Header = () => {
+  // eslint-disable-next-line
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSwitched, setIsSwitched] = useState(false);
@@ -11,7 +12,7 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
-      if (window.scrollY > 5) {
+      if (window.scrollY > 30) {
         setIsScrolled(true);
         setIsSwitched(!isSwitched);
       } else {

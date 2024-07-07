@@ -13,11 +13,10 @@
 
   .switch-button.scrolled {
     /* estilos quando scrolled é true */
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transform: scale(1.1); /* exemplo de efeito de escala */
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 200px;
+    padding: 8;
+    scale: 2;
   }
+
