@@ -1,21 +1,17 @@
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import './App.css';
-import Header from './pages/libs/Header/Header';
-import Footer from './pages/libs/Footer/Footer';
 import LandPage from './pages/LandPage';
+import AppPage from './pages/AppPage';
 
 function App() {
   return (
-    <div className="App">
-      <div className='LandPage'>
-        <div>
-          <Header />
-            <main>
-              <LandPage />
-            </main>
-          <Footer />
-        </div>
-      </div>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={LandPage} />
+        <Route path="/app" component={AppPage} />
+      </Switch>
+    </Router>
   );
 }
 

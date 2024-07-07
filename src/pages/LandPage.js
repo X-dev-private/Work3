@@ -1,9 +1,12 @@
 import React from "react";
 import './LandPage.css';
+import Header from "./libs/Header/Header";
+import Footer from "./libs/Footer/Footer";
 
 const LandPage = () => {
-    return (
+    return (  
         <main>
+        <Header />
         <div className='landPage'>
           <section id="quem-somos">
               <h2>Quem somos</h2>
@@ -41,6 +44,7 @@ const LandPage = () => {
               </ul>
           </section>
         </div>
+        <Footer />
       </main>
     );
 };

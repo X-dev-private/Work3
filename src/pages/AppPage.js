@@ -2,7 +2,9 @@ import React from "react";
 
 const AppPage = () => {
     return (
-        <div></div>
+        <main>
+            <h1>App Page</h1>
+        </main>
     )
 }
 
