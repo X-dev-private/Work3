@@ -15,9 +15,6 @@ function App() {
           <Footer />
         </div>
       </div>
-      <div className='AppPage'>
-
-      </div>
     </div>
   );
 }

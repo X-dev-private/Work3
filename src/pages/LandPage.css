@@ -3,16 +3,14 @@ main {
     max-width: 800px;
     margin: auto;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
     color: #333;
   }
   
   section {
-    margin-bottom: 2rem;
     background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 500px;
   }
   

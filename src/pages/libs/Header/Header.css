@@ -7,12 +7,6 @@ header {
   align-items: center;
 }
 
-.header.scrolled {
-  transform: scale(0.5) translateX(-50%);
-  border-radius: 50%;
-  background-color: #666;
-}z
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -25,10 +19,11 @@ header {
   flex: 1;
 }
 
-.header-botton {
+.header-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
 }
 
 nav ul {
@@ -73,7 +68,7 @@ nav a:hover {
 }
 
 .logo {
-  margin-left: auto;
+  margin: 0 auto;
   transform: scale(4);
 }
 

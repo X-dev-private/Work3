@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
 import logoImage from './2.png';
-import SwitchBotton from '../../components/swichBotton/SwitchBotton';
+import SwitchBotton from '../../components/swichBotton/SwitchButton';
 
 const Header = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -22,16 +22,10 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  });
 
   return (
-    <header
-      className={`header ${isScrolled ? 'scrolled' : ''}`}
-      style={{
-        transform: isScrolled ? 'scale(0.5) translateX(-50%)' : 'none',
-        borderRadius: isScrolled ? '50%' : '0',
-      }}
-    >
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div class="logo"> 
         <img src={logoImage} alt="logo" />
       </div>
@@ -45,7 +39,7 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-      <div className="header-botton">
+      <div className="header-button">
         <SwitchBotton switched={isSwitched} scrolled={isScrolled} /> {/* Pass the scrolled state as a prop */}
       </div>
     </header>
