@@ -1,7 +1,6 @@
 import React from "react";
 import './LandPage.css';
 import Header from "./libs/Header/Header";
-import Footer from "./libs/Footer/Footer";
 
 const LandPage = () => {
     return (  
@@ -44,7 +43,6 @@ const LandPage = () => {
               </ul>
           </section>
         </div>
-        <Footer />
       </main>
     );
 };
