@@ -6,9 +6,9 @@ const Sidebar = () => {
     <div className="sidebar">
       <h2>Menu</h2>
       <ul>
-        <li><a href="#">Página 1</a></li>
-        <li><a href="#">Página 2</a></li>
-        <li><a href="#">Página 3</a></li>
+        <li><a href="#">Perfil</a></li>
+        <li><a href="#">DAOs Favoritas</a></li>
+        <li><a href="#">Minha Equipe</a></li>
         {/* Adicione mais itens conforme necessário */}
       </ul>
     </div>

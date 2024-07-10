@@ -1,5 +1,5 @@
 import React from "react";
-import { differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns';
+import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
 import './JobsCard.css' ;
 
 const JobsCard = () => {
@@ -11,9 +11,12 @@ const JobsCard = () => {
     const diffMinutes = differenceInMinutes(date2, date1);
     const diffHours = differenceInHours(date2, date1);
     const diffDays = differenceInDays(date2, date1);
+    const diffYears = differenceInYears(date2, date1);
 
     let diffText;
-    if (diffDays > 0) {
+    if (diffYears > 0) {
+        diffText = `${diffYears} ano(s) atras`;
+    } else if (diffDays > 0) {
         diffText = `${diffDays} dia(s) atras`;
     } else if (diffHours > 0) {
         diffText = `${diffHours} hora(s) atras`;
