@@ -1,60 +1,65 @@
+/*landpage*/
 main {
     padding: 2rem;
     margin: auto;
     font-family: Arial, sans-serif;
     color: #333;
   }
-  
-  section {
-    background: white;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin: 150px 200px 150px 200px;
-  }
-  
-  h2 {
-    color: #0077b6;
-    border-bottom: 2px solid #0077b6;
-    padding-bottom: 0.5rem;
-  }
-  p {
-    line-height: 1.6;
-    margin: 1rem 0;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .landPage ul li {
-    background: #e9f5ff;
-    margin: 0.5rem 0;
-    padding: 0.5rem 1rem;
-    border-left: 4px solid #0077b6;
-    border-radius: 4px;
-  }
-  
-  .landPage ul li strong {
-    display: block;
-    color: #0077b6;
-  }
 
-  .mainAppPage {
-    display: flex;
-    flex-direction: row;
+.fade {
+  transition: opacity 0.5s ease-out;
+}
+
+section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 150px 200px 150px 200px;
+}
+  
+h2 {
+  color: #0077b6;
+  border-bottom: 2px solid #0077b6;
+  padding-bottom: 0.5rem;
+}
+p {
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+  
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+  
+.landPage ul li {
+  background: #e9f5ff;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid #0077b6;
+  border-radius: 4px;
+}
+  
+.landPage ul li strong {
+  display: block;
+  color: #0077b6;
+}
+
+/*app page*/
+.mainAppPage {
+  display: flex;
+  flex-direction: row;
 }
 
 .sidebar-container {
-    width: 20%; /* adjust the width to your liking */
-    padding: 20px;
-    position: fixed;
+  width: 20%; /* adjust the width to your liking */
+  padding: 20px;
+  position: fixed;
 }
 
 .jobs-card-container {
-    width: 80%; /* adjust the width to your liking */
-    padding: 20px;
-    margin-left: 30%;
-    
+  width: 80%; /* adjust the width to your liking */
+  padding: 20px;
+  margin-left: 30%;  
 }
