@@ -8,6 +8,7 @@ import AppPage from './pages/AppPage';
 import About from './pages/About';
 import DevTeam from './pages/DevTeam';
 import NFT from './pages/NFT';
+import RoadMap from "./pages/RoadMap";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/devteam" element={<DevTeam />} />
         <Route path="/nft" element={<NFT />} />
+        <Route path="/roadmap" element={<RoadMap />} />
       </Routes>
       <Footer />
     </Router>

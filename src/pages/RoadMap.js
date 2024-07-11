@@ -1,7 +1,6 @@
 import React from "react";
 
-const WhitePaper = () => {
-    /*variavel*/
+const RoadMap = () => {
 
     return (
         <main>
@@ -10,4 +9,4 @@ const WhitePaper = () => {
     )
 }
 
-export default WhitePaper;
+export default RoadMap;
