@@ -11,12 +11,17 @@
     cursor: pointer;
   }
 
-  .switch-button.scrolled {
-    /* estilos quando scrolled é true */
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 200px;
-    padding: 8;
-    scale: 2;
-  }
+  .jobsCard {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px black;
+    margin: 2rem;
+}
 
+.data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

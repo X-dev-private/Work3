@@ -1,6 +1,6 @@
 import React from "react";
 import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
-import './JobsCard.css' ;
+import "../../../Styles/GlobalComponents.css";
 
 const JobsCard = () => {
     // Defining two example dates

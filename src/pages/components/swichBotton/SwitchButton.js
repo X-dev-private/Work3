@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import './SwitchButton.css';
+import "../../../Styles/GlobalComponents.css"
 
 const SwitchButton = () => {
   const navigate = useNavigate();

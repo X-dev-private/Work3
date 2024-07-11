@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "./libs/SideBar/SideBar";
 import JobsCard from "./components/JobsCard/JobsCard";
-import "./AppPage.css";
+import "../Styles/GlobalPages.css"
 
 const AppPage = () => {
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import './LandPage.css';
+import "../Styles/GlobalPages.css";
 import Header from "./libs/Header/Header";
 
 const LandPage = () => {
