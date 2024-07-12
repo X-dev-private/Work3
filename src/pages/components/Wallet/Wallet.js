@@ -6,6 +6,8 @@ const Wallet = () => {
     const [web3, setWeb3] = useState(null);
     const [account, setAccount] = useState(null);
     const [balance, setBalance] = useState(null);
+    const [toAddress, setToAddress] = useState('');
+    const [amount, setAmount] = useState('');
 
     useEffect(() => {
         if (window.ethereum) {
@@ -33,14 +35,46 @@ const Wallet = () => {
         }
     };
 
+    const sendTransaction = async () => {
+        if (web3 && account) {
+            try {
+                const value = web3.utils.toWei(amount, 'ether');
+                await web3.eth.sendTransaction({
+                    from: account,
+                    to: toAddress,
+                    value: value
+                });
+                alert('Transação enviada!');
+            } catch (error) {
+                console.error('Erro ao enviar transação:', error);
+            }
+        }
+    };
+
     return (
-        <div>
+        <div className="wallet-container">
             <h1>React Wallet</h1>
             <button onClick={connectWallet}>Conectar Wallet</button>
             {account && (
                 <div>
                     <p><strong>Conta:</strong> {account}</p>
                     <p><strong>Saldo:</strong> {balance} ETH</p>
+                    <div>
+                        <h2>Enviar Transação</h2>
+                        <input
+                            type="text"
+                            placeholder="Endereço do Destinatário"
+                            value={toAddress}
+                            onChange={(e) => setToAddress(e.target.value)}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Valor em ETH"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+                        <button onClick={sendTransaction}>Enviar</button>
+                    </div>
                 </div>
             )}
         </div>
