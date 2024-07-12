@@ -1,15 +1,15 @@
 import React from "react";
 import Sidebar from "./libs/SideBar/SideBar";
 import JobsCard from "./components/JobsCard/JobsCard";
+import HeaderApp from "./libs/Header/HeaderApp";
 import "../Styles/GlobalPages.css"
 
 const AppPage = () => {
     return (
-        <main>
+        <main className="mainApp">
+                <HeaderApp />
             <div className="mainAppPage">
-                <div className="sidebar-container">
                     <Sidebar />
-                </div>
                 <div className="jobs-card-container">
                     {[...Array(7)].map((_, index) => (
                         <JobsCard key={index} />

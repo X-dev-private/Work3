@@ -23,7 +23,7 @@
   }
   
   .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   
   .sidebar ul li a {
@@ -42,15 +42,19 @@
   header {
     background-color: transparent;
     color: white;
-    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     width: 100%;
     z-index: 1;
+  }
+
+  header.header {
+    padding: 1rem;
+    position: fixed;
   }
   
   .container {
@@ -96,33 +100,48 @@
     border-radius: 16px;
   }
   
-  .social {
-    display: flex;
-    align-items: center;
-  }
-  
-  .social a {
-    margin-right: 10px;
-    color: #fff;
-    font-size: 18px;
-  }
-  
-  .social a:hover {
-    color: #ccc;
-  }
-  
-  .fab {
-    font-size: 18px;
-  }
-  
   .logo {
     margin: 0 auto;
-    transform: scale(4);
+    transform: scale(3);
   }
   
   .logo img {
     width: 40px;
     height: 40px;
+  }
+
+  /*HeaderApp*/
+
+  .headerApp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+  }
+  
+  .headerApp ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-right: 20px;
+  }
+  
+  .headerApp li {
+    margin-right: 5px;
+    padding: 5px;
+  }
+  
+  .headerApp a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .headerApp a:hover {
+    color: #666;
   }
 
   /*footer*/
@@ -143,23 +162,23 @@
     align-items: center;
   }
   
-  .footer ul {
+  footer ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
   }
   
-  .footer li {
+  footer li {
     margin-right: 20px;
   }
   
-  .footer a {
+  footer a {
     color: #fff;
     text-decoration: none;
   }
   
-  .footer a:hover {
+  footer a:hover {
     text-decoration: underline;
   } 
   

@@ -3,7 +3,7 @@ import "../../../Styles/GlobalLibs.css";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="sticky-footer">
       <div className="container">
         <p>
           &copy; 2024 Copyright ZeroElevenTeam{' '}
