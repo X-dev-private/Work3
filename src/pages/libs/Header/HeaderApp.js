@@ -1,4 +1,5 @@
 import React from "react";
+import Wallet from "../../components/Wallet/Wallet";
 
 const HeaderApp = () => {
     return (
@@ -14,6 +15,7 @@ const HeaderApp = () => {
             <ul>
                 <li><a href="/app">Sign In 🔑</a></li>
             </ul>
+            <Wallet />
         </header>
     )
 }
