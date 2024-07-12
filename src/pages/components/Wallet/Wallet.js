@@ -8,6 +8,7 @@ const Wallet = () => {
     const [balance, setBalance] = useState(null);
     const [toAddress, setToAddress] = useState('');
     const [amount, setAmount] = useState('');
+    const [isConnected, setIsConnected] = useState(false); // Add this state
 
     useEffect(() => {
         if (window.ethereum) {
@@ -29,6 +30,7 @@ const Wallet = () => {
                 setAccount(accounts[0]);
                 const balance = await web3.eth.getBalance(accounts[0]);
                 setBalance(web3.utils.fromWei(balance, 'ether'));
+                setIsConnected(true); // Set isConnected to true when connected
             } catch (error) {
                 console.error('Erro ao conectar à carteira:', error);
             }
@@ -55,6 +57,10 @@ const Wallet = () => {
         <div className="wallet-container">
             <h1>React Wallet</h1>
             <button onClick={connectWallet}>Conectar Wallet</button>
+        <div>
+            {!isConnected && ( // Conditionally render the button
+                <button onClick={connectWallet}>Conectar Wallet</button>
+            )}
             {account && (
                 <div>
                     <p><strong>Conta:</strong> {account}</p>
