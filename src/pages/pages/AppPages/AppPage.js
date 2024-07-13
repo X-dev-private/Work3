@@ -1,8 +1,8 @@
 import React from "react";
-import Sidebar from "./libs/SideBar/SideBar";
-import JobsCard from "./components/JobsCard/JobsCard";
-import HeaderApp from "./libs/Header/HeaderApp";
-import "../Styles/GlobalPages.css"
+import Sidebar from "../../libs/SideBar/SideBar";
+import JobsCard from "../../components/JobsCard/JobsCard";
+import HeaderApp from "../../libs/Header/HeaderApp";
+import "../../../Styles/GlobalPages.css"
 
 const AppPage = () => {
     return (

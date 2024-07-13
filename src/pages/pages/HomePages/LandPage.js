@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, useViewportScroll, useTransform } from "framer-motion";
-import "../Styles/GlobalPages.css";
-import Header from "./libs/Header/Header";
+import "../../../Styles/GlobalPages.css";
+import Header from '../../libs/Header/Header';
 
 const LandPage = () => {
   const { scrollY } = useViewportScroll();

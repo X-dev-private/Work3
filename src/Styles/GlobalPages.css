@@ -73,5 +73,23 @@ header.headerApp {
   padding-left: 10%;
   padding-right: 10%;
   top: 0;
+}
 
+/*profile*/
+
+.profile-container{
+  width: 80%; /* adjust the width to your liking */
+  padding: 20px;
+  margin-left: 30%;
+}
+
+.meta-user {
+  display: flex;
+  align-items: center;
+}
+
+.meta-user img {
+  margin-right: 10px;
+  width: 192px;
+  height: 192px;
 }

@@ -1,6 +1,8 @@
 // src/Wallet.js
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
+import logoImage from '../../../Styles/Images/2.png';
+import '../../../Styles/GlobalComponents.css';
 
 const Wallet = () => {
     const [web3, setWeb3] = useState(null);
@@ -35,8 +37,14 @@ const Wallet = () => {
     return (
         <div className="wallet-container">
             {isConnected? (
-                <div>
-                    <p><strong>Conta:</strong> {account.slice(0, 7)}...</p>
+                <div className='WalletInfo'>
+                    <div className='logoWallet'>
+                        <img src={logoImage} alt="logo"/>
+                        </div>
+                    <div className='walletName'>
+                        <p><strong>Conta:</strong> {account.slice(0, 7)}...</p>
+                        <p>nome de usuario</p>
+                    </div>
                 </div>
             ) : (
                 <button onClick={connectWallet}>Conectar Wallet</button>

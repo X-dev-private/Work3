@@ -6,11 +6,11 @@ const HeaderApp = () => {
         <header className="headerApp">
             <ul>
                 <li><a href="/app">Bounties 💰</a></li>
-                <li><a href="/app">Jobs 🧑‍💼</a></li>
+                <li><a href="/app/jobs">Jobs 🧑‍💼</a></li>
             </ul>
             <ul>
-                <li><a href="/app">DAOs 🏛️</a></li>
-                <li><a href="/app">Freelancers 🧑‍💻</a></li>
+                <li><a href="/app/DAOs">DAOs 🏛️</a></li>
+                <li><a href="/app/frelancers">Freelancers 🧑‍💻</a></li>
             </ul>
             <Wallet />
         </header>

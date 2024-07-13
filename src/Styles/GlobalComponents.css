@@ -29,7 +29,6 @@
 
 /*Wallet*/
 
-/* src/App.css */
 .App {
   text-align: center;
 }
@@ -47,13 +46,15 @@
 .wallet-container {
   background: #0077b6;
   backdrop-filter: blur(10px);
-  border-radius: 16px;
-  width: 150px;
+  border-radius: 32px;
+  width: 200px;
   text-align: center;
 }
 
 .wallet-container p {
   color: white;
+  font-size: 0.8rem; /* adjust the font size to your liking */
+  margin: 0;
 }
 
 .wallet-container button {
@@ -67,6 +68,28 @@
 }
 
 .wallet-container button:hover {
-  background-color: #009bb5;
+  background-color: #0a5e03;
+}
+
+.WalletInfo {
+  display: flex;
+  align-items: center;
+}
+
+.logoWallet {
+  margin: 4px; /* adicione um espaço entre o logo e o texto */
+  background-color: aliceblue;
+  border-radius: 100%;
+}
+
+.logoWallet img {
+  width: 32px;
+  height: 32px;
+}
+
+.walletName {
+  margin: 15px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 

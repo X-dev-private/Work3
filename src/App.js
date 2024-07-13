@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Footer from './pages/libs/Footer/Footer';
 import './Styles/App.css';
 
-import LandPage from './pages/LandPage';
-import AppPage from './pages/AppPage';
-import About from './pages/About';
-import DevTeam from './pages/DevTeam';
-import NFT from './pages/NFT';
-import RoadMap from "./pages/RoadMap";
+import LandPage from './pages/pages/HomePages/LandPage';
+import AppPage from './pages/pages/AppPages/AppPage';
+import About from "./pages/pages/HomePages/About"
+import DevTeam from './pages/pages/HomePages/DevTeam';
+import NFT from './pages/pages/HomePages/NFT';
+import RoadMap from './pages/pages/HomePages/RoadMap';
+import Profile from './pages/pages/AppPages/Profile';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/devteam" element={<DevTeam />} />
         <Route path="/nft" element={<NFT />} />
         <Route path="/roadmap" element={<RoadMap />} />
+        <Route path="/app/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>
