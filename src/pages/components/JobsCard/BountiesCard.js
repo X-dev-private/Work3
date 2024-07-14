@@ -2,7 +2,7 @@ import React from "react";
 import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
 import "../../../Styles/GlobalComponents.css";
 
-const JobsCard = () => {
+const BountiesCard = () => {
     // Defining two example dates
     const date1 = new Date('2024-07-10T10:00:00');
     const date2 = new Date();
@@ -29,10 +29,7 @@ const JobsCard = () => {
 
     return (
         <div className="jobsCard">
-            <div className="jobsCard_title">
-                <h2>titulo</h2>
-                <h2>Dao Name</h2>
-            </div>
+            <h2>Titulo</h2>
             <p>{truncatedDescription}... <strong>ler mais</strong></p>
             <div className="Creator">
                 <p>criador por :</p>
@@ -41,9 +38,8 @@ const JobsCard = () => {
                 <p>Criado em : {date1.toLocaleString()}</p>
                 <p>há {diffText}</p>
             </div>
-            <div className="Creator"></div>
         </div>
     );
 };
 
-export default JobsCard;
+export default BountiesCard;

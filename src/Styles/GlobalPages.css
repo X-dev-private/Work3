@@ -77,14 +77,39 @@ header.headerApp {
 
 /*profile*/
 
-.profile-container{
-  width: 80%; /* adjust the width to your liking */
-  padding: 20px;
-  margin-left: 30%;
+.mainAppProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.aboutUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 32px;
+  width: 80%;
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  margin: 32px;
 }
 
 .meta-user {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -92,4 +117,13 @@ header.headerApp {
   margin-right: 10px;
   width: 192px;
   height: 192px;
+}
+
+.exp {
+  margin: 16px;
+}
+
+.userJobs {
+  width: 80%;
+  margin: 16px;
 }

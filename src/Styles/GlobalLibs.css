@@ -1,12 +1,9 @@
 /* Sidebar.css */
 .sidebar {
     width: 200px;
-    height: 100%;
     position: fixed;
-    top: 0;
-    left: 0;
     background-color: transparent;
-    padding-top: 20px;
+    margin: 16px;
     display: flex;
     flex-direction: column;
     height: 95vh;
@@ -14,6 +11,8 @@
   
   .sidebar h2 {
     text-align: center;
+    margin: 0;
+    padding: 0;
   }
   
   .sidebar ul {
@@ -35,7 +34,7 @@
   
   .sidebar ul li a:hover {
     background-color: #00ADEF;
-    border-radius: 16px;
+    border-radius: 32px;
   }
   
   /*header*/
