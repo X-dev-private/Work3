@@ -1,39 +1,36 @@
-import React, { useState } from 'react';
-import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
+import React, { useState, useEffect, useRef } from 'react';
 import "../../../Styles/GlobalPages.css";
 import HeaderApp from "../../libs/Header/HeaderApp";
 
 const CreaterJobs = ({ account }) => {
-  const [title, setTitle] = useState("titulo");
-  const [description, setDescription] = useState("descripcion");
+  const [title, setTitle] = useState("digite aqui o titulo");
+  const [description, setDescription] = useState("digite aqui a descrição");
+  const [price, setPrice] = useState("");
+  const descriptionRef = useRef(null);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
+
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
 
-  // Definindo duas datas de exemplo
-  const date1 = new Date('2024-07-10T10:00:00');
+  const handlePriceChange = (event) => {
+    const { value } = event.target;
+    const newValue = value.replace(/[^0-9.,]/g, '');
+    const formattedValue = newValue.replace(/,/g, '.');
+    setPrice(formattedValue);
+  };
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      descriptionRef.current.style.height = 'auto';
+      descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
+    }
+  }, [description]);
+
   const date2 = new Date();
-
-  // Calculando as diferenças
-  const diffMinutes = differenceInMinutes(date2, date1);
-  const diffHours = differenceInHours(date2, date1);
-  const diffDays = differenceInDays(date2, date1);
-  const diffYears = differenceInYears(date2, date1);
-
-  let diffText;
-  if (diffYears > 0) {
-    diffText = `${diffYears} ano(s) atrás`;
-  } else if (diffDays > 0) {
-    diffText = `${diffDays} dia(s) atrás`;
-  } else if (diffHours > 0) {
-    diffText = `${diffHours} hora(s) atrás`;
-  } else {
-    diffText = `${diffMinutes} minuto(s) atrás`;
-  }
 
   return (
     <main>
@@ -42,27 +39,32 @@ const CreaterJobs = ({ account }) => {
 
       <div className="jobsCard">
         <div className="jobsCard_create">
-          <h2><input type="text" value={title} onChange={handleTitleChange} /></h2>
+          <h2>
+            <input type="text" value={title} onChange={handleTitleChange} />
+          </h2>
         </div>
         <h3>Dao Name</h3>
-        <input type="text" value={description} onChange={handleDescriptionChange} />
+        <textarea
+          ref={descriptionRef}
+          value={description}
+          onChange={handleDescriptionChange}
+        />
         <div className="Creator">
           <p>criador por : {account}</p>
           <div className="moneyName">
             <p className="reward-job-card"><strong>Recompensa :</strong></p>
-            <p>💲3 ETH</p>
+            <p>💲<input type="text" value={price} onChange={handlePriceChange} /> ETH</p>
             <p>/ ou /</p>
             <button>Dar lance</button>
           </div>
         </div>
         <div className="data">
-          <p>Criado em : {date1.toLocaleString()}</p>
-          <p>há {diffText}</p>
+          <p>Sera criado as : {date2.toLocaleString()}</p>
         </div>
-        <div className="Creator"></div>
       </div>
     </main>
   );
 };
 
 export default CreaterJobs;
+

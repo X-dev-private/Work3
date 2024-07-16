@@ -141,3 +141,15 @@ header.headerApp {
   border-radius: 5px;
   width: 100%;
 }
+
+.jobsCard textarea {
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  resize: none; /* Prevent manual resizing */
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  min-height: 100px;
+}
+
