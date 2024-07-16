@@ -11,6 +11,7 @@ import NFT from './pages/pages/HomePages/NFT';
 import RoadMap from './pages/pages/HomePages/RoadMap';
 import Profile from './pages/pages/AppPages/Profile';
 import Jobs from './pages/pages/AppPages/Jobs';
+import CreaterJobs from './pages/pages/AppPages/CreaterJob';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/roadmap" element={<RoadMap />} />
         <Route path="/app/profile" element={<Profile />} />
         <Route path="/app/jobs" element={<Jobs />} />
+        <Route path="/app/create" element={<CreaterJobs />} />
       </Routes>
       <Footer />
     </Router>

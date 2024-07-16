@@ -127,3 +127,17 @@ header.headerApp {
   width: 80%;
   margin: 16px;
 }
+
+/*Creater Jobs*/
+
+.jobsCard h2 input[type="text"] {
+  /* inherit styles from h2 element */
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  /* additional styles for input element */
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}

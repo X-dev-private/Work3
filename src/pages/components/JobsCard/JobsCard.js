@@ -36,6 +36,12 @@ const JobsCard = () => {
             <p>{truncatedDescription}... <strong>ler mais</strong></p>
             <div className="Creator">
                 <p>criador por :</p>
+                <div className="moneyName">
+                    <p className="reward-job-card"><strong>Recompensa :</strong></p>
+                    <p>💲3 ETH</p>
+                    <p>/ ou /</p>
+                    <button>Dar lance</button>
+                </div>
             </div>
             <div className="data">
                 <p>Criado em : {date1.toLocaleString()}</p>

@@ -11,7 +11,6 @@ const Sidebar = () => {
       <ul>
         <li><a href="/app/profile">👤 Perfil</a></li>
         <li><a href="/app">⭐ DAOs Favoritas</a></li>
-        <li><a href="/app">👥 Minha Equipe</a></li>
       </ul>
       <h2> </h2>
       <ul>
