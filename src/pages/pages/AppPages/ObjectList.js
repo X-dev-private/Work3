@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import BountiesCard from '../../components/JobsCard/BountiesCard';
 
 const ObjectList = () => {
   const [objects, setObjects] = useState([]);
@@ -46,8 +45,6 @@ const ObjectList = () => {
         <div>
           <h3>Conteúdo do Objeto Selecionado ({selectedObject}):</h3>
           <pre>{objectContent}</pre>
-          {/* Renderize o componente BountiesCard com o conteúdo do objeto selecionado */}
-          <BountiesCard content={objectContent} />
         </div>
       )}
     </div>

@@ -1,7 +1,8 @@
+// src/libs/Header/HeaderApp.js
 import React from "react";
 import Wallet from "../../components/Wallet/Wallet";
 
-const HeaderApp = () => {
+const HeaderApp = ({ receiveAccount }) => {
     return (
         <header className="headerApp">
             <ul>
@@ -12,9 +13,9 @@ const HeaderApp = () => {
                 <li><a href="/app/DAOs">DAOs 🏛️</a></li>
                 <li><a href="/app/frelancers">Freelancers 🧑‍💻</a></li>
             </ul>
-            <Wallet />
+            <Wallet receiveAccount={receiveAccount} />
         </header>
-    )
-}
+    );
+};
 
 export default HeaderApp;

@@ -73,6 +73,28 @@ app.post('/upload', async (req, res) => {
   }
 });
 
+// Novo endpoint para upload de perfil do usuário
+app.post('/uploadProfile', async (req, res) => {
+  const { userName, userDescription, logo, date1, account } = req.body;
+
+  const params = {
+    Bucket: 'us-wk3-user',
+    Key: `users/${userName}.json`, // Caminho e nome do arquivo no S3
+    Body: JSON.stringify({ userName, userDescription, logo, date1, account }),
+    ContentType: 'application/json',
+  };
+
+  try {
+    console.log('Attempting to upload user profile to S3 with params:', params);
+    const result = await s3.upload(params).promise();
+    console.log('User profile upload successful:', result);
+    res.status(200).send('User profile uploaded successfully');
+  } catch (error) {
+    console.error('Error uploading user profile to S3:', error);
+    res.status(500).send(error.message);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
