@@ -2,11 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import "../../../Styles/GlobalPages.css";
 import HeaderApp from "../../libs/Header/HeaderApp";
 import axios from 'axios';
+import Wallet from "../../components/Wallet/Wallet";
 
-const CreaterJobs = ({ account }) => {
+const CreaterJobs = () => {
   const [title, setTitle] = useState("digite aqui o titulo");
   const [description, setDescription] = useState("digite aqui a descrição");
   const [price, setPrice] = useState("");
+  const [account, setAccount] = useState(""); // State para armazenar a conta
+
   const descriptionRef = useRef(null);
 
   const handleTitleChange = (event) => {
@@ -32,7 +35,7 @@ const CreaterJobs = ({ account }) => {
   }, [description]);
 
   const handleSubmit = async () => {
-    const jobData = { title, description, price, account };
+    const jobData = { title, description, price, account, date };
     try {
       await axios.post('http://localhost:5000/upload', jobData);
       alert('Job created and uploaded successfully!');
@@ -42,13 +45,20 @@ const CreaterJobs = ({ account }) => {
     }
   };
 
-  const date2 = new Date();
+  const date = new Date();
+
+  // Função para receber a conta da Wallet
+  const receiveAccount = (acc) => {
+    setAccount(acc);
+  };
 
   return (
     <main>
-      <HeaderApp account={account} />
+      <HeaderApp />
       <h1>Creater Jobs</h1>
 
+      <Wallet receiveAccount={receiveAccount} /> {/* Passa a função para Wallet */}
+      
       <div className="jobsCard">
         <div className="jobsCard_create">
           <h2>
@@ -71,7 +81,7 @@ const CreaterJobs = ({ account }) => {
           </div>
         </div>
         <div className="data">
-          <p>Sera criado as : {date2.toLocaleString()}</p>
+          <p>Sera criado as : {date.toLocaleString()}</p>
         </div>
       </div>
       <button onClick={handleSubmit}>Enviar para o Server e S3</button>
@@ -80,4 +90,5 @@ const CreaterJobs = ({ account }) => {
 };
 
 export default CreaterJobs;
+
 

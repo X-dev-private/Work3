@@ -13,6 +13,7 @@ import Profile from './pages/pages/AppPages/Profile';
 import Jobs from './pages/pages/AppPages/Jobs';
 import CreaterJobs from './pages/pages/AppPages/CreaterJob';
 import PoliticaDePrivacidade from './pages/pages/HomePages/PoliticaDePrivacidade';
+import ObjectList from './pages/pages/AppPages/ObjectList';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/app/jobs" element={<Jobs />} />
         <Route path="/app/create" element={<CreaterJobs />} />
         <Route path="/politica-de-privacidade" element={<PoliticaDePrivacidade />} />
+        <Route path="/app/objectlist" element={<ObjectList />} />
       </Routes>
       <Footer />
     </Router>
