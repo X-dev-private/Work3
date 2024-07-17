@@ -1,6 +1,6 @@
 import React from "react";
 
-const About = () => {
+const PoliticaDePrivacidade = () => {
     return (
         <main>
         <div class="container">
@@ -48,4 +48,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default PoliticaDePrivacidade;

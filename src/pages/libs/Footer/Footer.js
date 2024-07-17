@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="sticky-footer">
       <div className="container">
         <p>
-          &copy; 2024 Copyright ZeroElevenTeam{' '}
+          <a href='/politica-de-privacidade'>&copy; 2024 Copyright ZeroElevenTeam{' '}</a>
           <a href="/">Work3</a>
         </p>
         <ul>
