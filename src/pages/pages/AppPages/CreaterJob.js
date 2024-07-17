@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "../../../Styles/GlobalPages.css";
 import HeaderApp from "../../libs/Header/HeaderApp";
+import axios from 'axios';
 
 const CreaterJobs = ({ account }) => {
   const [title, setTitle] = useState("digite aqui o titulo");
@@ -29,6 +30,17 @@ const CreaterJobs = ({ account }) => {
       descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
     }
   }, [description]);
+
+  const handleSubmit = async () => {
+    const jobData = { title, description, price, account };
+    try {
+      await axios.post('http://localhost:5000/upload', jobData);
+      alert('Job created and uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading job data:', error);
+      alert('Failed to upload job data');
+    }
+  };
 
   const date2 = new Date();
 
@@ -62,6 +74,7 @@ const CreaterJobs = ({ account }) => {
           <p>Sera criado as : {date2.toLocaleString()}</p>
         </div>
       </div>
+      <button onClick={handleSubmit}>Enviar para o Server e S3</button>
     </main>
   );
 };
