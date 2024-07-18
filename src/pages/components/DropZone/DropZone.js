@@ -2,23 +2,35 @@ import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import '../../../Styles/GlobalComponents.css';
 
+const MDropzone = ({ onDropImage }) => {
 
-const MDropzone = () => {
   const onDrop = useCallback(acceptedFiles => {
-    // Handle the files
-    console.log(acceptedFiles);
-  }, []);
+    const file = acceptedFiles[0];
+    const reader = new FileReader();
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    reader.onload = () => {
+      if (onDropImage) { // Verifique se a função foi passada
+        onDropImage(reader.result); // Chama a função de callback com a URL da imagem
+      } else {
+        console.error("onDropImage is not a function");
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }, [onDropImage]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/*' });
 
   return (
-    <div {...getRootProps()} className='dropzone'>
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Solte os arquivos aqui ...</p>
-      ) : (
-        <p>Arraste e solte arquivos aqui, ou clique para selecionar arquivos</p>
-      )}
+    <div className="container-dropzone">
+      <div {...getRootProps()} className="dropzone">
+        <input {...getInputProps()} />
+        {isDragActive ? (
+          <p></p>
+        ) : (
+          <p>Arraste e solte uma imagem aqui, ou clique para selecionar uma imagem</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -114,6 +114,7 @@ header.headerApp {
 }
 
 .meta-user img {
+  border-radius: 100%;
   margin-right: 10px;
   width: 192px;
   height: 192px;
@@ -164,4 +165,29 @@ header.headerApp {
 }
 .privacity ul {
   padding-left: 1.5rem;
+}
+
+/**/
+
+.mainApp h2 input[type="text"] {
+  /* inherit styles from h2 element */
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  /* additional styles for input element */
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.mainApp textarea {
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  resize: none; /* Prevent manual resizing */
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  min-height: 100px;
 }

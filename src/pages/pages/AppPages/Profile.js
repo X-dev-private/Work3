@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeaderApp from "../../libs/Header/HeaderApp";
 import "../../../Styles/GlobalPages.css";
-import logoImage from '../../../Styles/Images/2.png';
+import logoImage from '../../../Styles/Images/guest.jpg';
 import BountiesCard from '../../components/JobsCard/BountiesCard';
 import axios from 'axios';
 import MDropzone from "../../components/DropZone/DropZone";
@@ -21,8 +21,8 @@ const Profile = () => {
         setUserDescription(event.target.value);
     };
 
-    const handleLogoChange = (event) => {
-        setLogo(event.target.files[0]);
+    const handleDropImage = (imageUrl) => {
+        setLogo(imageUrl);
     };
 
     const handleSaveProfile = async () => {
@@ -55,22 +55,20 @@ const Profile = () => {
                     <section className="aboutUser">
                         <section className="user-data">
                             <div className="meta-user">
-                                <img src={logoImage} alt="logo" />
-                                <MDropzone />
-                                <h2 className="user-name"><input 
-                                    type="text" 
-                                    value={userName} 
-                                    onChange={handleUserNameChange} 
-                                /></h2>
+                                <img src={logo} alt="logo" />
+                                <MDropzone onDropImage={handleDropImage} />
+                                <h2 className="user-name">
+                                    <input 
+                                        type="text" 
+                                        value={userName} 
+                                        onChange={handleUserNameChange} 
+                                    />
+                                </h2>
                             </div>
                             <textarea 
                                 className="user-description" 
                                 value={userDescription} 
                                 onChange={handleUserDescriptionChange} 
-                            />
-                            <input 
-                                type="file" 
-                                onChange={handleLogoChange} 
                             />
                             <p>entrou em : {date1.toLocaleString()}</p>
                         </section>

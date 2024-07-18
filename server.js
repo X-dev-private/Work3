@@ -51,36 +51,22 @@ app.get('/object/:key', async (req, res) => {
   }
 });
 
-// Endpoint para upload de arquivo (mantido como estava)
-app.post('/upload', async (req, res) => {
-  const { title, description, price, account } = req.body;
-
-  const params = {
-    Bucket: 'us-wk3-user',
-    Key: `jobs/${new Date().getFullYear()}/${new Date().getMonth() + 1}/${Date.now()}.json`, // Caminho e nome do arquivo no S3
-    Body: JSON.stringify({ title, description, price, account }),
-    ContentType: 'application/json',
-  };
-
-  try {
-    console.log('Attempting to upload to S3 with params:', params);
-    const result = await s3.upload(params).promise();
-    console.log('Upload successful:', result);
-    res.status(200).send('File uploaded successfully');
-  } catch (error) {
-    console.error('Error uploading to S3:', error);
-    res.status(500).send(error.message);
-  }
-});
-
-// Novo endpoint para upload de perfil do usuário
+// Endpoint para upload de arquivo de perfil do usuário
 app.post('/uploadProfile', async (req, res) => {
-  const { account , userName, userDescription, logo, date1 } = req.body;
+  const { account, userName, userDescription, logo, date1 } = req.body;
+
+  const userProfile = {
+    account,
+    userName,
+    userDescription,
+    logo,
+    date1: new Date(date1).toISOString() // Converte a data para formato ISO
+  };
 
   const params = {
     Bucket: 'us-wk3-user',
     Key: `users/${account}.json`, // Caminho e nome do arquivo no S3
-    Body: JSON.stringify({ account,userName, userDescription, logo, date1}),
+    Body: JSON.stringify(userProfile),
     ContentType: 'application/json',
   };
 
@@ -95,9 +81,25 @@ app.post('/uploadProfile', async (req, res) => {
   }
 });
 
+// Endpoint para obter informações do perfil do usuário com base no account
+app.get('/userInfo/:account', async (req, res) => {
+  const { account } = req.params;
+
+  const params = {
+    Bucket: 'us-wk3-user',
+    Key: `users/${account}.json`, // Caminho para o arquivo de perfil no S3
+  };
+
+  try {
+    const data = await s3.getObject(params).promise();
+    const userProfile = JSON.parse(data.Body.toString('utf-8'));
+    res.json(userProfile);
+  } catch (error) {
+    console.error('Failed to fetch user profile:', error);
+    res.status(500).send('Failed to fetch user profile');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-
-

@@ -125,10 +125,26 @@
 
 /**/
 
+.container-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .dropzone {
-    border: '2px dashed #cccccc';
-    padding: '20px';
-    cursor: 'pointer';
-  }
+  border: 2px dashed #cccccc;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  width: 300px;
+  margin: 20px 0;
+}
+
+.profileImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
