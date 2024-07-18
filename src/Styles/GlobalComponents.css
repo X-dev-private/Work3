@@ -132,3 +132,23 @@
     cursor: 'pointer';
   }
 
+
+
+  /* Estilos para a seção "Sobre Nós" */
+  .devTeam {
+    background: #fff;
+    border-radius: 16px;
+  }
+  
+  .devTeam h1, .devTeam h2 {
+    color: #0077b6;
+    border-bottom: 2px solid #0077b6;
+    padding-bottom: 0.5rem;
+  }
+  
+  .devTeam p {
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  
+

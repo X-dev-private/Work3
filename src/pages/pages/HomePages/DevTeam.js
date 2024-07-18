@@ -2,7 +2,8 @@ import React from "react";
 
 const DevTeam = () => {
     return (
-        <main>
+        <main className="devTeam">
+            <section>
             <h1>Sobre Nós</h1>
                 <p>Bem-vindo à ZeroElevenTeam, uma equipe dedicada de especialistas em tecnologia e desenvolvimento digital. Nós nos especializamos em transformar ideias inovadoras em soluções digitais que impulsionam o sucesso de nossos clientes. Desde a nossa fundação, temos liderado projetos que redefinem a maneira como empresas operam no ambiente digital.</p>
 
@@ -23,6 +24,7 @@ const DevTeam = () => {
             
             <h2>Junte-se a Nós</h2>
             <p>Se você está pronto para explorar novas possibilidades no mundo digital, junte-se a nós na jornada para transformar sua visão em realidade. Estamos aqui para ajudar sua empresa a alcançar novos patamares de sucesso.</p>
+            </section>
         </main>
     )
 }
