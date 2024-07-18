@@ -3,7 +3,7 @@ import React from "react";
 const PoliticaDePrivacidade = () => {
     return (
     <main>
-        <section>
+        <section className="privacity">
             <h1>Política de Privacidade</h1>
             <p>Bem-vindo ao site da Work 3. A sua privacidade é muito importante para nós. Esta política de privacidade descreve como coletamos, usamos, protegemos e compartilhamos suas informações pessoais quando você usa nosso site.</p>
 

@@ -75,12 +75,12 @@ app.post('/upload', async (req, res) => {
 
 // Novo endpoint para upload de perfil do usuário
 app.post('/uploadProfile', async (req, res) => {
-  const { userName, userDescription, logo, date1, account } = req.body;
+  const { account , userName, userDescription, logo, date1 } = req.body;
 
   const params = {
     Bucket: 'us-wk3-user',
-    Key: `users/${userName}.json`, // Caminho e nome do arquivo no S3
-    Body: JSON.stringify({ userName, userDescription, logo, date1, account }),
+    Key: `users/${account}.json`, // Caminho e nome do arquivo no S3
+    Body: JSON.stringify({ account,userName, userDescription, logo, date1}),
     ContentType: 'application/json',
   };
 

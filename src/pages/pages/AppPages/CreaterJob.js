@@ -2,13 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import "../../../Styles/GlobalPages.css";
 import HeaderApp from "../../libs/Header/HeaderApp";
 import axios from 'axios';
-import Wallet from "../../components/Wallet/Wallet";
 
 const CreaterJobs = () => {
   const [title, setTitle] = useState("digite aqui o titulo");
   const [description, setDescription] = useState("digite aqui a descrição");
   const [price, setPrice] = useState("");
-  const [account, setAccount] = useState(""); // State para armazenar a conta
 
   const descriptionRef = useRef(null);
 
@@ -35,7 +33,7 @@ const CreaterJobs = () => {
   }, [description]);
 
   const handleSubmit = async () => {
-    const jobData = { title, description, price, account, date };
+    const jobData = { title, description, price, date };
     try {
       await axios.post('http://localhost:5000/upload', jobData);
       alert('Job created and uploaded successfully!');
@@ -47,17 +45,10 @@ const CreaterJobs = () => {
 
   const date = new Date();
 
-  // Função para receber a conta da Wallet
-  const receiveAccount = (acc) => {
-    setAccount(acc);
-  };
-
   return (
     <main>
       <HeaderApp />
       <h1>Creater Jobs</h1>
-
-      <Wallet receiveAccount={receiveAccount} /> {/* Passa a função para Wallet */}
       
       <div className="jobsCard">
         <div className="jobsCard_create">
@@ -72,7 +63,7 @@ const CreaterJobs = () => {
           onChange={handleDescriptionChange}
         />
         <div className="Creator">
-          <p>criador por : {account}</p>
+          <p>criador por : </p>
           <div className="moneyName">
             <p className="reward-job-card"><strong>Recompensa :</strong></p>
             <p>💲<input type="text" value={price} onChange={handlePriceChange} /> ETH</p>

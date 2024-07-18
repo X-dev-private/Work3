@@ -4,21 +4,34 @@ import "../../../Styles/GlobalPages.css";
 import logoImage from '../../../Styles/Images/2.png';
 import BountiesCard from '../../components/JobsCard/BountiesCard';
 import axios from 'axios';
+import MDropzone from "../../components/DropZone/DropZone";
 
 const Profile = () => {
-    const [account, setAccount] = useState("");
+    const [account, setAccount] = useState(""); // Estado para armazenar a conta
+    const [userName, setUserName] = useState("qual seu nick de usuario ?");
+    const [userDescription, setUserDescription] = useState("conte - nos sobre voce");
+    const [logo, setLogo] = useState(logoImage);
     const date1 = new Date();
-    const userName = "Zero Eleven Team";
-    const userDescription = "About me";
-    const logo = logoImage;
+
+    const handleUserNameChange = (event) => {
+        setUserName(event.target.value);
+    };
+
+    const handleUserDescriptionChange = (event) => {
+        setUserDescription(event.target.value);
+    };
+
+    const handleLogoChange = (event) => {
+        setLogo(event.target.files[0]);
+    };
 
     const handleSaveProfile = async () => {
         const userProfile = {
+            account,
             userName,
             userDescription,
             logo,
-            date1,
-            account  // Adicione a account ao objeto de perfil do usuário
+            date1
         };
 
         try {
@@ -29,6 +42,7 @@ const Profile = () => {
         }
     };
 
+    // Função para receber a conta da Wallet
     const receiveAccount = (acc) => {
         setAccount(acc);
     };
@@ -42,10 +56,22 @@ const Profile = () => {
                         <section className="user-data">
                             <div className="meta-user">
                                 <img src={logoImage} alt="logo" />
-                                <h2 className="user-name">{userName}</h2>
+                                <MDropzone />
+                                <h2 className="user-name"><input 
+                                    type="text" 
+                                    value={userName} 
+                                    onChange={handleUserNameChange} 
+                                /></h2>
                             </div>
-                            <p>{account}</p>
-                            <p className="user-description">{userDescription}</p>
+                            <textarea 
+                                className="user-description" 
+                                value={userDescription} 
+                                onChange={handleUserDescriptionChange} 
+                            />
+                            <input 
+                                type="file" 
+                                onChange={handleLogoChange} 
+                            />
                             <p>entrou em : {date1.toLocaleString()}</p>
                         </section>
                         <section className="exp">
@@ -64,5 +90,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-

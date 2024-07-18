@@ -123,3 +123,12 @@
   margin-bottom: 0;
 }
 
+/**/
+
+
+.dropzone {
+    border: '2px dashed #cccccc';
+    padding: '20px';
+    cursor: 'pointer';
+  }
+
