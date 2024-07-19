@@ -107,7 +107,7 @@
 }
 
 .logoWallet {
-  margin: 4px; /* adicione um espaço entre o logo e o texto */
+  margin: 4px;
   background-color: aliceblue;
   border-radius: 100%;
 }
@@ -123,7 +123,7 @@
   margin-bottom: 0;
 }
 
-/**/
+/*Dropzone*/
 
 .container-dropzone {
   display: flex;
@@ -147,24 +147,3 @@
   border-radius: 50%;
   object-fit: cover;
 }
-
-
-
-  /* Estilos para a seção "Sobre Nós" */
-  .devTeam {
-    background: #fff;
-    border-radius: 16px;
-  }
-  
-  .devTeam h1, .devTeam h2 {
-    color: #0077b6;
-    border-bottom: 2px solid #0077b6;
-    padding-bottom: 0.5rem;
-  }
-  
-  .devTeam p {
-    line-height: 1.6;
-    margin: 1rem 0;
-  }
-  
-

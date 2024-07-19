@@ -1,8 +1,10 @@
 import React from "react";
+import Header from "../../libs/Header/Header";
 
 const DevTeam = () => {
     return (
         <main className="devTeam">
+            <Header />
             <section>
             <h1>Sobre Nós</h1>
                 <p>Bem-vindo à ZeroElevenTeam, uma equipe dedicada de especialistas em tecnologia e desenvolvimento digital. Nós nos especializamos em transformar ideias inovadoras em soluções digitais que impulsionam o sucesso de nossos clientes. Desde a nossa fundação, temos liderado projetos que redefinem a maneira como empresas operam no ambiente digital.</p>

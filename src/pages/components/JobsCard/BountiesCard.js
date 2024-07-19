@@ -3,13 +3,18 @@ import { differenceInMinutes, differenceInHours, differenceInDays, differenceInY
 import "../../../Styles/GlobalComponents.css";
 
 const BountiesCard = ({ content }) => {
-    // Definir o conteúdo do objeto S3 como um objeto JSON
+    // Verificar se o conteúdo existe e é uma string válida
+    if (!content || typeof content !== 'string') {
+        console.error('Invalid content:', content);
+        return <p>Conteúdo inválido</p>; // Ou outro fallback adequado
+    }
+
     let obj;
     try {
         obj = JSON.parse(content);
     } catch (error) {
         console.error('Failed to parse object content:', error);
-        return null; // Retornar null ou algum fallback em caso de falha ao analisar o JSON
+        return <p>Falha ao analisar o conteúdo do objeto</p>; // Ou outro fallback adequado
     }
 
     // Definindo as propriedades a serem exibidas
@@ -59,3 +64,4 @@ const BountiesCard = ({ content }) => {
 };
 
 export default BountiesCard;
+

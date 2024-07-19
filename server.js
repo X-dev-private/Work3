@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AWS = require('aws-sdk');
-require('dotenv').config(); // Carregar variáveis de ambiente do arquivo .env
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,22 +18,20 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-// Endpoint para listar objetos no S3
 app.get('/list', async (req, res) => {
   const params = {
-    Bucket: 'us-wk3-user', // Substitua pelo nome do seu bucket
+    Bucket: 'us-wk3-user', 
   };
 
   try {
     const data = await s3.listObjectsV2(params).promise();
-    res.json(data.Contents); // Retorna a lista de objetos no formato JSON
+    res.json(data.Contents); 
   } catch (error) {
     console.error('Error listing objects:', error);
     res.status(500).send('Failed to list objects');
   }
 });
 
-// Endpoint para buscar conteúdo de um objeto no S3
 app.get('/object/:key', async (req, res) => {
   const { key } = req.params;
 
@@ -44,14 +42,13 @@ app.get('/object/:key', async (req, res) => {
 
   try {
     const data = await s3.getObject(params).promise();
-    res.json(data.Body.toString('utf-8')); // Retorna o conteúdo do objeto como uma string
+    res.json(data.Body.toString('utf-8'));
   } catch (error) {
     console.error('Failed to fetch object content:', error);
     res.status(500).send('Failed to fetch object content');
   }
 });
 
-// Endpoint para upload de arquivo de perfil do usuário
 app.post('/uploadProfile', async (req, res) => {
   const { account, userName, userDescription, logo, date1 } = req.body;
 
@@ -60,12 +57,12 @@ app.post('/uploadProfile', async (req, res) => {
     userName,
     userDescription,
     logo,
-    date1: new Date(date1).toISOString() // Converte a data para formato ISO
+    date1: new Date(date1).toISOString()
   };
 
   const params = {
     Bucket: 'us-wk3-user',
-    Key: `users/${account}.json`, // Caminho e nome do arquivo no S3
+    Key: `users/${account}.json`,
     Body: JSON.stringify(userProfile),
     ContentType: 'application/json',
   };
@@ -81,13 +78,12 @@ app.post('/uploadProfile', async (req, res) => {
   }
 });
 
-// Endpoint para obter informações do perfil do usuário com base no account
 app.get('/userInfo/:account', async (req, res) => {
   const { account } = req.params;
 
   const params = {
     Bucket: 'us-wk3-user',
-    Key: `users/${account}.json`, // Caminho para o arquivo de perfil no S3
+    Key: `users/${account}.json`,
   };
 
   try {

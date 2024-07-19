@@ -45,7 +45,26 @@ ul {
   color: #0077b6;
 }
 
+  /* development team */
+
+  .devTeam {
+    background: #fff;
+    border-radius: 16px;
+  }
+  
+  .devTeam h1, .devTeam h2 {
+    color: #0077b6;
+    border-bottom: 2px solid #0077b6;
+    padding-bottom: 0.5rem;
+  }
+  
+  .devTeam p {
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+
 /*app page*/
+
 .mainApp {
   display: flex;
   flex-direction: column;
@@ -63,7 +82,7 @@ ul {
 }
 
 .jobs-card-container {
-  width: 80%; /* adjust the width to your liking */
+  width: 80%;
   padding: 20px;
   margin-left: 30%;
 }
@@ -129,14 +148,33 @@ header.headerApp {
   margin: 16px;
 }
 
-/*Creater Jobs*/
-
-.jobsCard h2 input[type="text"] {
-  /* inherit styles from h2 element */
+.mainApp h2 input[type="text"] {
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
-  /* additional styles for input element */
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.mainApp textarea {
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  min-height: 100px;
+}
+
+/*Creater Jobs*/
+
+.jobsCard h2 input[type="text"] {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
   padding: 5px;
   border: none;
   border-radius: 5px;
@@ -147,7 +185,7 @@ header.headerApp {
   border: none;
   padding: 10px;
   font-size: 16px;
-  resize: none; /* Prevent manual resizing */
+  resize: none; 
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -165,29 +203,4 @@ header.headerApp {
 }
 .privacity ul {
   padding-left: 1.5rem;
-}
-
-/**/
-
-.mainApp h2 input[type="text"] {
-  /* inherit styles from h2 element */
-  font-size: inherit;
-  font-weight: inherit;
-  color: inherit;
-  /* additional styles for input element */
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
-}
-
-.mainApp textarea {
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  resize: none; /* Prevent manual resizing */
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-  min-height: 100px;
 }

@@ -7,11 +7,11 @@ import axios from 'axios';
 import MDropzone from "../../components/DropZone/DropZone";
 
 const Profile = () => {
-    const [account, setAccount] = useState(""); // Estado para armazenar a conta
+    const [account, setAccount] = useState(""); 
     const [userName, setUserName] = useState("qual seu nick de usuario ?");
     const [userDescription, setUserDescription] = useState("conte - nos sobre voce");
     const [logo, setLogo] = useState(logoImage);
-    const date1 = new Date();
+    const [date1, setDate1] = useState("");
 
     const handleUserNameChange = (event) => {
         setUserName(event.target.value);
@@ -42,14 +42,20 @@ const Profile = () => {
         }
     };
 
-    // Função para receber a conta da Wallet
     const receiveAccount = (acc) => {
         setAccount(acc);
     };
 
+    const receiveUserInfo = (userInfo) => {
+        setUserName(userInfo.userName);
+        setUserDescription(userInfo.userDescription);
+        setLogo(userInfo.logo || logoImage);
+        setDate1(new Date(userInfo.date1).toLocaleString());
+    };
+
     return (
         <main className="mainApp">
-            <HeaderApp receiveAccount={receiveAccount} />
+            <HeaderApp receiveAccount={receiveAccount} receiveUserInfo={receiveUserInfo} />
             <div className="mainAppProfile">
                 <div className="profile-container">
                     <section className="aboutUser">
@@ -70,7 +76,7 @@ const Profile = () => {
                                 value={userDescription} 
                                 onChange={handleUserDescriptionChange} 
                             />
-                            <p>entrou em : {date1.toLocaleString()}</p>
+                            <p>entrou em : {date1}</p>
                         </section>
                         <section className="exp">
                             <p>experiencias profissionais</p>
