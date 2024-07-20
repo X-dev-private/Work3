@@ -14,6 +14,9 @@ import Jobs from './pages/pages/AppPages/Jobs';
 import CreaterJobs from './pages/pages/AppPages/CreaterJob';
 import PoliticaDePrivacidade from './pages/pages/HomePages/PoliticaDePrivacidade';
 import ObjectList from './pages/pages/AppPages/ObjectList';
+import DAOs from './pages/pages/AppPages/DAOs';
+import Freelancer from './pages/pages/AppPages/Freelancer';
+import MyDao from './pages/pages/AppPages/MyDao';
 
 function App() {
   return (
@@ -30,6 +33,9 @@ function App() {
         <Route path="/app/create" element={<CreaterJobs />} />
         <Route path="/politica-de-privacidade" element={<PoliticaDePrivacidade />} />
         <Route path="/app/obj" element={<ObjectList />} />
+        <Route path="/app/dao" element={<DAOs />} />
+        <Route path="/app/freelancer" element={<Freelancer />} />
+        <Route path="/app/mydao" element={<MyDao />} />
       </Routes>
       <Footer />
     </Router>

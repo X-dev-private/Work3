@@ -57,6 +57,15 @@
   background: #2E3192;
 }
 
+.daoCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(46,49,146, 0.5);
+  margin: 2rem;
+  align-items: center;
+}
+
 /*Wallet*/
 
 .App {

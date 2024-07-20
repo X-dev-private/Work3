@@ -40,7 +40,7 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
               account: connectedAccount,
               userName: 'Novo Usuário',
               userDescription: '',
-              logo: logoImage,
+              profileImage: logoImage,  // Alterado para profileImage
               date1: new Date().toISOString()
             };
             await saveUserInfo(userInfo);
@@ -81,7 +81,7 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
   };
 
   const getLogo = () => {
-    return userInfo && userInfo.logo ? userInfo.logo : logoImage;
+    return userInfo && userInfo.profileImage ? userInfo.profileImage : logoImage;  // Alterado para profileImage
   };
 
   return (

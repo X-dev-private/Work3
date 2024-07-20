@@ -9,8 +9,8 @@ const HeaderApp = ({ receiveAccount, receiveUserInfo }) => {
                 <li><a href="/app/jobs">Jobs 🧑‍💼</a></li>
             </ul>
             <ul>
-                <li><a href="/app/DAOs">DAOs 🏛️</a></li>
-                <li><a href="/app/frelancers">Freelancers 🧑‍💻</a></li>
+                <li><a href="/app/dao">DAOs 🏛️</a></li>
+                <li><a href="/app/freelancer">Freelancers 🧑‍💻</a></li>
             </ul>
             <Wallet receiveAccount={receiveAccount} receiveUserInfo={receiveUserInfo} />
         </header>

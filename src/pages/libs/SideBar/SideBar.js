@@ -10,7 +10,7 @@ const Sidebar = () => {
       <h2> </h2>
       <ul>
         <li><a href="/app/profile">👤 Perfil</a></li>
-        <li><a href="/app">⭐ Minha DAO</a></li>
+        <li><a href="/app/mydao">⭐ Minha DAO</a></li>
       </ul>
       <h2> </h2>
       <ul>

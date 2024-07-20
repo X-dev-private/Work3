@@ -11,7 +11,7 @@ const Profile = () => {
     const [account, setAccount] = useState(""); 
     const [userName, setUserName] = useState("qual seu nick de usuario ?");
     const [userDescription, setUserDescription] = useState("conte - nos sobre voce");
-    const [logo, setLogo] = useState(logoImage);
+    const [profileImage, setProfileImage] = useState(logoImage);
     const [date1, setDate1] = useState("");
 
     const handleUserNameChange = (event) => {
@@ -23,7 +23,7 @@ const Profile = () => {
     };
 
     const handleDropImage = (imageUrl) => {
-        setLogo(imageUrl);
+        setProfileImage(imageUrl);
     };
 
     const handleSaveProfile = async () => {
@@ -31,7 +31,7 @@ const Profile = () => {
             account,
             userName,
             userDescription,
-            logo,
+            profileImage,  // Ajustado para corresponder ao backend
             date1: moment().toISOString()  // Convertendo a data para o formato ISO
         };
 
@@ -54,8 +54,8 @@ const Profile = () => {
     const receiveUserInfo = (userInfo) => {
         setUserName(userInfo.userName);
         setUserDescription(userInfo.userDescription);
-        setLogo(userInfo.logo || logoImage);
-        setDate1(moment(userInfo.date1).format('DD/MM/YYYY, HH:mm:ss'));  // Convertendo a data recebida para o formato desejado
+        setProfileImage(userInfo.profileImage || logoImage); // Ajustado para corresponder ao backend
+        setDate1(userInfo.date1 ? moment(userInfo.date1).format('DD/MM/YYYY, HH:mm:ss') : '');  // Convertendo a data recebida para o formato desejado
     };
 
     return (
@@ -66,7 +66,7 @@ const Profile = () => {
                     <section className="aboutUser">
                         <section className="user-data">
                             <div className="meta-user">
-                                <img src={logo} alt="logo" />
+                                <img src={profileImage} alt="Profile" />  {/* Alterado para profileImage */}
                                 <MDropzone onDropImage={handleDropImage} />
                                 <h2 className="user-name">
                                     <input 
