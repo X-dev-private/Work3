@@ -9,11 +9,26 @@ const MDropzone = ({ onDropImage }) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      if (onDropImage) { // Verifique se a função foi passada
-        onDropImage(reader.result); // Chama a função de callback com a URL da imagem
-      } else {
-        console.error("onDropImage is not a function");
-      }
+      const img = new Image();
+      img.src = reader.result;
+
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const maxSize = 192; // Define o tamanho máximo desejado para largura e altura
+        const width = img.width;
+        const height = img.height;
+        const scale = Math.min(maxSize / width, maxSize / height);
+        
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        if (onDropImage) {
+          onDropImage(canvas.toDataURL('image/jpeg')); // Converte para base64
+        }
+      };
     };
 
     reader.readAsDataURL(file);
@@ -26,7 +41,7 @@ const MDropzone = ({ onDropImage }) => {
       <div {...getRootProps()} className="dropzone">
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p></p>
+          <p>Solte a imagem aqui...</p>
         ) : (
           <p>Arraste e solte uma imagem aqui, ou clique para selecionar uma imagem</p>
         )}

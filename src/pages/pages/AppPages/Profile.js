@@ -5,6 +5,7 @@ import logoImage from '../../../Styles/Images/guest.jpg';
 import BountiesCard from '../../components/JobsCard/BountiesCard';
 import axios from 'axios';
 import MDropzone from "../../components/DropZone/DropZone";
+import moment from 'moment';
 
 const Profile = () => {
     const [account, setAccount] = useState(""); 
@@ -31,11 +32,15 @@ const Profile = () => {
             userName,
             userDescription,
             logo,
-            date1
+            date1: moment().toISOString()  // Convertendo a data para o formato ISO
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/uploadProfile', userProfile);
+            const response = await axios.post('http://localhost:5000/uploadProfile', userProfile, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             console.log('Profile uploaded successfully:', response.data);
         } catch (error) {
             console.error('Error uploading profile:', error);
@@ -50,7 +55,7 @@ const Profile = () => {
         setUserName(userInfo.userName);
         setUserDescription(userInfo.userDescription);
         setLogo(userInfo.logo || logoImage);
-        setDate1(new Date(userInfo.date1).toLocaleString());
+        setDate1(moment(userInfo.date1).format('DD/MM/YYYY, HH:mm:ss'));  // Convertendo a data recebida para o formato desejado
     };
 
     return (

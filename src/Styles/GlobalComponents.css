@@ -103,18 +103,23 @@
 
 .WalletInfo {
   display: flex;
+  flex-direction: row; 
   align-items: center;
 }
 
 .logoWallet {
   margin: 4px;
   background-color: aliceblue;
-  border-radius: 100%;
+  border-radius: 50%; /* Garantir que a imagem seja circular */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoWallet img {
   width: 32px;
   height: 32px;
+  border-radius: 50%; /* Garantir que a imagem seja circular */
 }
 
 .walletName {

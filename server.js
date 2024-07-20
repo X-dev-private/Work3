@@ -52,15 +52,58 @@ app.get('/object/:key', async (req, res) => {
 app.post('/uploadProfile', async (req, res) => {
   const { account, userName, userDescription, logo, date1 } = req.body;
 
+  console.log('Received date1:', date1); // Log para ver o valor de date1
+
+  let date1Iso;
+  try {
+    const dateObj = new Date(date1);
+    if (isNaN(dateObj)) {
+      throw new Error('Invalid date format');
+    }
+    date1Iso = dateObj.toISOString();
+  } catch (error) {
+    console.error('Invalid date format:', date1);
+    return res.status(400).send('Invalid date format');
+  }
+
+  // Converte a imagem base64 para buffer
+  const base64Data = logo.replace(/^data:image\/\w+;base64,/, "");
+  const buffer = Buffer.from(base64Data, 'base64');
+
+  // Define o nome do arquivo da imagem
+  const imageKey = `images/${account}.jpg`; // Ajuste o caminho conforme necessário
+
+  // Armazena a imagem no S3
+  const imageParams = {
+    Bucket: 'us-wk3-user',
+    Key: imageKey,
+    Body: buffer,
+    ContentEncoding: 'base64',
+    ContentType: 'image/jpeg' // Ajuste o tipo conforme necessário
+  };
+
+  try {
+    await s3.upload(imageParams).promise();
+    console.log('Image upload successful');
+  } catch (error) {
+    console.error('Error uploading image to S3:', error);
+    return res.status(500).send('Error uploading image');
+  }
+
+  // Define a URL da imagem armazenada no S3
+  const imageUrl = `https://us-wk3-user.s3.amazonaws.com/${imageKey}`;
+
+  // Atualiza o perfil do usuário com a URL da imagem
   const userProfile = {
     account,
     userName,
     userDescription,
-    logo,
-    date1: new Date(date1).toISOString()
+    logo: imageUrl, // Atualiza com a URL da imagem
+    date1: date1Iso
   };
 
-  const params = {
+  // Armazena o perfil do usuário no S3
+  const profileParams = {
     Bucket: 'us-wk3-user',
     Key: `users/${account}.json`,
     Body: JSON.stringify(userProfile),
@@ -68,8 +111,8 @@ app.post('/uploadProfile', async (req, res) => {
   };
 
   try {
-    console.log('Attempting to upload user profile to S3 with params:', params);
-    const result = await s3.upload(params).promise();
+    console.log('Attempting to upload user profile to S3 with params:', profileParams);
+    const result = await s3.upload(profileParams).promise();
     console.log('User profile upload successful:', result);
     res.status(200).send('User profile uploaded successfully');
   } catch (error) {

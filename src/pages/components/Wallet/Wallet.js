@@ -33,7 +33,18 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
         setIsConnected(true);
 
         if (connectedAccount) {
-          const userInfo = await fetchUserInfo(connectedAccount);
+          let userInfo = await fetchUserInfo(connectedAccount);
+          if (Object.keys(userInfo).length === 0) {
+            // Usuário conectando pela primeira vez
+            userInfo = {
+              account: connectedAccount,
+              userName: 'Novo Usuário',
+              userDescription: '',
+              logo: logoImage,
+              date1: new Date().toISOString()
+            };
+            await saveUserInfo(userInfo);
+          }
           receiveAccount(connectedAccount);
           receiveUserInfo(userInfo);
         }
@@ -58,6 +69,14 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
       console.error('Erro ao buscar informações do usuário:', error);
       setUserInfo(null);
       return {};
+    }
+  };
+
+  const saveUserInfo = async (userInfo) => {
+    try {
+      await axios.post('http://localhost:5000/uploadProfile', userInfo);
+    } catch (error) {
+      console.error('Erro ao salvar informações do usuário:', error);
     }
   };
 

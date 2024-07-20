@@ -29,7 +29,7 @@ function App() {
         <Route path="/app/jobs" element={<Jobs />} />
         <Route path="/app/create" element={<CreaterJobs />} />
         <Route path="/politica-de-privacidade" element={<PoliticaDePrivacidade />} />
-        <Route path="/app/objectlist" element={<ObjectList />} />
+        <Route path="/app/obj" element={<ObjectList />} />
       </Routes>
       <Footer />
     </Router>
