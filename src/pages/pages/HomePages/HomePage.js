@@ -3,7 +3,7 @@ import { motion, useViewportScroll, useTransform } from "framer-motion";
 import "../../../Styles/GlobalPages.css";
 import Header from '../../libs/Header/Header';
 
-const LandPage = () => {
+const HomePage = () => {
   const { scrollY } = useViewportScroll();
 
   const opacityQuemSomos = useTransform(scrollY, [200, 600], [1, 0]);
@@ -67,7 +67,7 @@ const LandPage = () => {
   );
 };
 
-export default LandPage;
+export default HomePage;
 
 
 

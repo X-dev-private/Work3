@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Footer from './pages/libs/Footer/Footer';
 import './Styles/App.css';
 
-import LandPage from './pages/pages/HomePages/LandPage';
+import HomePage from './pages/pages/HomePages/HomePage';
 import AppPage from './pages/pages/AppPages/AppPage';
 import About from "./pages/pages/HomePages/About"
 import DevTeam from './pages/pages/HomePages/DevTeam';
@@ -22,7 +22,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<LandPage />} />
+        <Route exact path="/" element={<HomePage />} />
         <Route path="/app" element={<AppPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/devteam" element={<DevTeam />} />

@@ -83,12 +83,12 @@ const MyDao = () => {
             <HeaderApp receiveAccount={receiveAccount} />
             <div className="mainAppProfile">
                 <div className="profile-container">
-                    <section className="aboutDao">
-                        <section className="dao-data">
-                            <div className="meta-dao">
+                    <section className="aboutUser">
+                        <section className="user-data">
+                            <div className="meta-user">
                                 <img src={logo} alt="logo" />
                                 <MDropzone onDropImage={handleDropImage} />
-                                <h2 className="dao-name">
+                                <h2 className="user-name">
                                     <input 
                                         type="text" 
                                         value={daoName} 
@@ -97,7 +97,7 @@ const MyDao = () => {
                                 </h2>
                             </div>
                             <textarea 
-                                className="dao-description" 
+                                className="user-description" 
                                 value={daoDescription} 
                                 onChange={handleDaoDescriptionChange} 
                             />
@@ -105,8 +105,8 @@ const MyDao = () => {
                             <button onClick={handleSaveProfile}>Save Profile</button>
                         </section>
                     </section>
-                    <div className="dao-bounties">
-                        <section className="daoJobs">
+                    <div className="user-bounties">
+                        <section className="userJobs">
                             <h2>user list</h2>
                             <h3>Moderadores</h3>
                             <ul>
@@ -121,7 +121,7 @@ const MyDao = () => {
                                 ))}
                             </ul>
                         </section>
-                        <section className="daoJobs">
+                        <section className="userJobs">
                             <h2>bounties Criadas</h2>
                             <BountiesCard />
                         </section>
