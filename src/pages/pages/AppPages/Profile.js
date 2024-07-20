@@ -82,17 +82,20 @@ const Profile = () => {
                                 onChange={handleUserDescriptionChange} 
                             />
                             <p>entrou em : {date1}</p>
-                        </section>
-                        <section className="exp">
-                            <p>experiencias profissionais</p>
+                            <button onClick={handleSaveProfile}>Save Profile</button>
                         </section>
                     </section>
-                    <section className="userJobs">
-                        <h2>bounties trabalhadas</h2>
-                        <BountiesCard />
-                    </section>
+                    <div className="user-bounties">
+                        <section className="userJobs">
+                            <h2>bounties trabalhadas</h2>
+                            <BountiesCard />
+                        </section>
+                        <section className="userJobs">
+                            <h2>bounties Criadas</h2>
+                            <BountiesCard />
+                        </section>
+                    </div>
                 </div>
-                <button onClick={handleSaveProfile}>Save Profile</button>
             </div>
         </main>
     );

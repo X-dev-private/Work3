@@ -5,3 +5,7 @@
 install dependencies : "npm install"
 
 run application : "npm start" or "yarn start" 
+
+## run server
+
+node server.js

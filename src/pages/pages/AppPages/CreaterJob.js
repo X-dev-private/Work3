@@ -48,7 +48,6 @@ const CreaterJobs = () => {
   return (
     <main>
       <HeaderApp />
-      <h1>Creater Jobs</h1>
       
       <div className="jobsCard">
         <div className="jobsCard_create">

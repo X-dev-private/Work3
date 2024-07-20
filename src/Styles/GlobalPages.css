@@ -169,6 +169,14 @@ header.headerApp {
   min-height: 100px;
 }
 
+.user-bounties {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 32px;
+  width: 80%;
+}
+
 /*Creater Jobs*/
 
 .jobsCard h2 input[type="text"] {
