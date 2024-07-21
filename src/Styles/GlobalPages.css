@@ -1,4 +1,4 @@
-/*landpage*/
+/*homepage*/
 main {
     margin: auto;
     font-family: Arial, sans-serif;
@@ -7,6 +7,14 @@ main {
 
 a {
   color: #000;
+}
+
+.fadeA {
+  transition: opacity 0.5s ease-out;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .fade {
@@ -61,6 +69,41 @@ ul {
   .devTeam p {
     line-height: 1.6;
     margin: 1rem 0;
+  }
+
+/*roadmap*/
+
+  .road-sec {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-left: 128px;
+    margin-right: -50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+
+  .header-space {
+    margin : 96px;
+  }
+
+  .header-space p {
+    color: #fff;
+  }
+
+  .road-sec ul {
+    list-style-type:square;
+    margin: 0;
+  }
+
+  .road-sec li {
+    margin: 16px;
+    margin-bottom: 0px;
+    padding: 0.5rem 1rem;
+    background: #e9f5ff;
+    border-left: 4px solid #0077b6;
+    border-radius: 4px;
   }
 
 /*app page*/
@@ -175,6 +218,18 @@ header.headerApp {
   justify-content: space-between;
   margin: 32px;
   width: 80%;
+}
+
+.savebutton {
+  margin: 16px;
+  padding: 16px;
+  border-radius: 32px;
+  background-color: #0077b6;
+  color: #fff;
+}
+
+.savebutton:hover {
+  background-color: #2E3192;
 }
 
 /*Creater Jobs*/

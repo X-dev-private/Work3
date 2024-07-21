@@ -82,7 +82,7 @@ const Profile = () => {
                                 onChange={handleUserDescriptionChange} 
                             />
                             <p>entrou em : {date1}</p>
-                            <button onClick={handleSaveProfile}>Save Profile</button>
+                            <button className="savebutton" onClick={handleSaveProfile}><strong>Save Profile</strong></button>
                         </section>
                     </section>
                     <div className="user-bounties">
