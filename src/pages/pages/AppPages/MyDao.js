@@ -32,8 +32,8 @@ const MyDao = () => {
         const daoProfile = {
             daoName,
             daoDescription,
-            logo,
-            date1: moment().toISOString(),
+            daoLogo: logo, // Ajustado para daoLogo
+            date1: moment(date1, 'DD/MM/YYYY, HH:mm:ss').toISOString(), // Certifica-se de que a data esteja no formato ISO
             accountModerator,
             accountUser
         };
@@ -75,7 +75,9 @@ const MyDao = () => {
     };
 
     useEffect(() => {
-        fetchDaoInfo();
+        if (daoName) {
+            fetchDaoInfo();
+        }
     }, [daoName]);
 
     return (

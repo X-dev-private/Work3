@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import axios from 'axios';
-import logoImage from '../../../Styles/Images/guest.jpg';
+import defaultLogo from '../../../Styles/Images/guest.jpg';  // Imagem padrão para o perfil
 import '../../../Styles/GlobalComponents.css';
 
 const Wallet = ({ receiveAccount, receiveUserInfo }) => {
@@ -28,25 +28,25 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         const accounts = await web3.eth.getAccounts();
         const connectedAccount = accounts[0];
-        
+
         setAccount(connectedAccount);
         setIsConnected(true);
 
         if (connectedAccount) {
-          let userInfo = await fetchUserInfo(connectedAccount);
-          if (Object.keys(userInfo).length === 0) {
+          let userProfile = await fetchUserInfo(connectedAccount);
+          if (!userProfile || Object.keys(userProfile).length === 0) {
             // Usuário conectando pela primeira vez
-            userInfo = {
+            userProfile = {
               account: connectedAccount,
               userName: 'Novo Usuário',
               userDescription: '',
-              profileImage: logoImage,  // Alterado para profileImage
+              profileImage: defaultLogo,  // Imagem padrão se não houver perfil
               date1: new Date().toISOString()
             };
-            await saveUserInfo(userInfo);
+            await saveUserInfo(userProfile);
           }
           receiveAccount(connectedAccount);
-          receiveUserInfo(userInfo);
+          receiveUserInfo(userProfile);
         }
       } catch (error) {
         console.error('Erro ao conectar à carteira:', error);
@@ -58,30 +58,26 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
     try {
       const response = await axios.get(`http://localhost:5000/userInfo/${connectedAccount}`);
       const userProfile = response.data;
-      if (Object.keys(userProfile).length > 0) {
-        setUserInfo(userProfile);
-        return userProfile;
-      } else {
-        setUserInfo(null);
-        return {};
-      }
+      setUserInfo(userProfile);
+      return userProfile;
     } catch (error) {
       console.error('Erro ao buscar informações do usuário:', error);
       setUserInfo(null);
-      return {};
+      return null;
     }
   };
 
-  const saveUserInfo = async (userInfo) => {
+  const saveUserInfo = async (userProfile) => {
     try {
-      await axios.post('http://localhost:5000/uploadProfile', userInfo);
+      await axios.post('http://localhost:5000/uploadProfile', userProfile);
     } catch (error) {
       console.error('Erro ao salvar informações do usuário:', error);
     }
   };
 
-  const getLogo = () => {
-    return userInfo && userInfo.profileImage ? userInfo.profileImage : logoImage;  // Alterado para profileImage
+  const getProfileImage = () => {
+    // Usa a URL da imagem do perfil ou a imagem padrão se não estiver definida
+    return userInfo && userInfo.profileImage ? userInfo.profileImage : defaultLogo;
   };
 
   return (
@@ -89,7 +85,7 @@ const Wallet = ({ receiveAccount, receiveUserInfo }) => {
       {isConnected ? (
         <div className='WalletInfo'>
           <div className='logoWallet'>
-            <img src={getLogo()} alt="logo" />
+            <img src={getProfileImage()} alt="Perfil" />
           </div>
           <div className='walletName'>
             <p><strong>Conta:</strong> {account.slice(0, 7)}...</p>

@@ -2,12 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AWS = require('aws-sdk');
+const sharp = require('sharp');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+// Configuração do CORS
+app.use(cors({
+  origin: '*', // Permite todas as origens. Ajuste conforme necessário para produção.
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
+
 app.use(bodyParser.json());
 
 AWS.config.update({
@@ -21,12 +28,13 @@ const s3 = new AWS.S3();
 // Endpoint existente para listar objetos
 app.get('/list', async (req, res) => {
   const params = {
-    Bucket: 'us-wk3-user', 
+    Bucket: 'us-wk3-user',
   };
 
   try {
     const data = await s3.listObjectsV2(params).promise();
-    res.json(data.Contents); 
+    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
+    res.json(data.Contents);
   } catch (error) {
     console.error('Error listing objects:', error);
     res.status(500).send('Failed to list objects');
@@ -44,14 +52,18 @@ app.get('/object/:key', async (req, res) => {
 
   try {
     const data = await s3.getObject(params).promise();
-    res.json(data.Body.toString('utf-8'));
+    // Define o Content-Type com base na extensão do arquivo
+    const ext = key.split('.').pop();
+    const contentType = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : 'image/png';
+    res.setHeader('Content-Type', contentType);
+    res.send(data.Body); // Envia o buffer diretamente
   } catch (error) {
     console.error('Failed to fetch object content:', error);
     res.status(500).send('Failed to fetch object content');
   }
 });
 
-// Endpoint existente para upload de perfil
+// Endpoint para upload de perfil com imagem no JSON
 app.post('/uploadProfile', async (req, res) => {
   const { account, userName, userDescription, profileImage, date1 } = req.body;
 
@@ -69,58 +81,48 @@ app.post('/uploadProfile', async (req, res) => {
     return res.status(400).send('Invalid date format');
   }
 
-  // Converte a imagem base64 para buffer
+  // Converte a imagem base64 para buffer usando sharp
   const base64Data = profileImage.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, 'base64');
 
-  // Define o nome do arquivo da imagem
-  const imageKey = `profileImages/${account}.jpg`; // Ajuste o caminho conforme necessário
-
-  // Armazena a imagem no S3
-  const imageParams = {
-    Bucket: 'us-wk3-user',
-    Key: imageKey,
-    Body: buffer,
-    ContentEncoding: 'base64',
-    ContentType: 'image/jpeg' // Ajuste o tipo conforme necessário
-  };
-
   try {
-    await s3.upload(imageParams).promise();
-    console.log('Image upload successful');
+    const processedImage = await sharp(buffer)
+      .resize({ width: 200, height: 200 })
+      .png() // Alterado para PNG
+      .toBuffer();
+
+    // Converte o buffer de volta para base64
+    const base64Image = `data:image/png;base64,${processedImage.toString('base64')}`;
+
+    // Atualiza o perfil do usuário com a imagem codificada em base64
+    const userProfile = {
+      account,
+      userName,
+      userDescription,
+      profileImage: base64Image, // Imagem codificada em base64
+      date1: date1Iso
+    };
+
+    // Armazena o perfil do usuário no S3
+    const profileParams = {
+      Bucket: 'us-wk3-user',
+      Key: `users/${account}.json`,
+      Body: JSON.stringify(userProfile),
+      ContentType: 'application/json',
+    };
+
+    try {
+      console.log('Attempting to upload user profile to S3 with params:', profileParams);
+      const result = await s3.upload(profileParams).promise();
+      console.log('User profile upload successful:', result);
+      res.status(200).send('User profile uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading user profile to S3:', error);
+      res.status(500).send(error.message);
+    }
   } catch (error) {
-    console.error('Error uploading image to S3:', error);
-    return res.status(500).send('Error uploading image');
-  }
-
-  // Define a URL da imagem armazenada no S3
-  const imageUrl = `https://us-wk3-user.s3.amazonaws.com/${imageKey}`;
-
-  // Atualiza o perfil do usuário com a URL da imagem
-  const userProfile = {
-    account,
-    userName,
-    userDescription,
-    profileImage: imageUrl, // Atualiza com a URL da imagem
-    date1: date1Iso
-  };
-
-  // Armazena o perfil do usuário no S3
-  const profileParams = {
-    Bucket: 'us-wk3-user',
-    Key: `users/${account}.json`,
-    Body: JSON.stringify(userProfile),
-    ContentType: 'application/json',
-  };
-
-  try {
-    console.log('Attempting to upload user profile to S3 with params:', profileParams);
-    const result = await s3.upload(profileParams).promise();
-    console.log('User profile upload successful:', result);
-    res.status(200).send('User profile uploaded successfully');
-  } catch (error) {
-    console.error('Error uploading user profile to S3:', error);
-    res.status(500).send(error.message);
+    console.error('Error processing image:', error);
+    res.status(500).send('Error processing image');
   }
 });
 
@@ -136,6 +138,7 @@ app.get('/userInfo/:account', async (req, res) => {
   try {
     const data = await s3.getObject(params).promise();
     const userProfile = JSON.parse(data.Body.toString('utf-8'));
+    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
     res.json(userProfile);
   } catch (error) {
     console.error('Failed to fetch user profile:', error);
@@ -143,7 +146,7 @@ app.get('/userInfo/:account', async (req, res) => {
   }
 });
 
-// Novo endpoint para upload de informações DAO
+// Endpoint para upload de informações DAO com imagem no JSON
 app.post('/uploadDao', async (req, res) => {
   const { daoName, daoDescription, daoLogo, date1, accountModerator, accountUser } = req.body;
 
@@ -161,63 +164,53 @@ app.post('/uploadDao', async (req, res) => {
     return res.status(400).send('Invalid date format');
   }
 
-  // Converte a imagem base64 para buffer
+  // Converte a imagem base64 para buffer usando sharp
   const base64Data = daoLogo.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, 'base64');
 
-  // Define o nome do arquivo da imagem
-  const imageKey = `daoImages/${daoName}.jpg`; // Ajuste o caminho conforme necessário
-
-  // Armazena a imagem no S3
-  const imageParams = {
-    Bucket: 'us-wk3-user',
-    Key: imageKey,
-    Body: buffer,
-    ContentEncoding: 'base64',
-    ContentType: 'image/jpeg' // Ajuste o tipo conforme necessário
-  };
-
   try {
-    await s3.upload(imageParams).promise();
-    console.log('DAO image upload successful');
+    const processedImage = await sharp(buffer)
+      .resize({ width: 200, height: 200 })
+      .png() // Alterado para PNG
+      .toBuffer();
+
+    // Converte o buffer de volta para base64
+    const base64Image = `data:image/png;base64,${processedImage.toString('base64')}`;
+
+    // Atualiza as informações DAO com a imagem codificada em base64
+    const daoProfile = {
+      daoName,
+      daoDescription,
+      logo: base64Image, // Imagem codificada em base64
+      date1: date1Iso,
+      accountModerator,
+      accountUser
+    };
+
+    // Armazena as informações DAO no S3
+    const daoParams = {
+      Bucket: 'us-wk3-user',
+      Key: `Dao/${daoName}.json`, // Usa daoName para o nome do arquivo
+      Body: JSON.stringify(daoProfile),
+      ContentType: 'application/json',
+    };
+
+    try {
+      console.log('Attempting to upload DAO profile to S3 with params:', daoParams);
+      const result = await s3.upload(daoParams).promise();
+      console.log('DAO profile upload successful:', result);
+      res.status(200).send('DAO profile uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading DAO profile to S3:', error);
+      res.status(500).send(error.message);
+    }
   } catch (error) {
-    console.error('Error uploading DAO image to S3:', error);
-    return res.status(500).send('Error uploading DAO image');
-  }
-
-  // Define a URL da imagem armazenada no S3
-  const imageUrl = `https://us-wk3-user.s3.amazonaws.com/${imageKey}`;
-
-  // Atualiza as informações DAO com a URL da imagem
-  const daoProfile = {
-    daoName,
-    daoDescription,
-    logo: imageUrl,
-    date1: date1Iso,
-    accountModerator,
-    accountUser
-  };
-
-  // Armazena as informações DAO no S3
-  const daoParams = {
-    Bucket: 'us-wk3-user',
-    Key: `Dao/${daoName}.json`, // Usa daoName para o nome do arquivo
-    Body: JSON.stringify(daoProfile),
-    ContentType: 'application/json',
-  };
-
-  try {
-    console.log('Attempting to upload DAO profile to S3 with params:', daoParams);
-    const result = await s3.upload(daoParams).promise();
-    console.log('DAO profile upload successful:', result);
-    res.status(200).send('DAO profile uploaded successfully');
-  } catch (error) {
-    console.error('Error uploading DAO profile to S3:', error);
-    res.status(500).send(error.message);
+    console.error('Error processing DAO image:', error);
+    res.status(500).send('Error processing DAO image');
   }
 });
 
-// Novo endpoint para obter informações DAO
+// Endpoint para obter informações DAO
 app.get('/getDaoInfo/:daoName', async (req, res) => {
   const { daoName } = req.params;
 
@@ -229,6 +222,7 @@ app.get('/getDaoInfo/:daoName', async (req, res) => {
   try {
     const data = await s3.getObject(params).promise();
     const daoProfile = JSON.parse(data.Body.toString('utf-8'));
+    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
     res.json(daoProfile);
   } catch (error) {
     console.error('Failed to fetch DAO profile:', error);
