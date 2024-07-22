@@ -1,63 +1,115 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../../../Styles/GlobalComponents.css";
 
-const BountiesCard = ({ content, userName, onUpdate }) => {
-    // Verifica se o conteúdo existe e é um objeto válido
-    if (!content || typeof content !== 'object') {
-        console.error('Invalid content:', content);
-        return <p>Conteúdo inválido</p>; // Ou outro fallback adequado
-    }
+const BountiesCard = ({ content, userName, onUpdate, creator }) => {
+    const { title, description, price, assigned = [], maybeAssigned = [] } = content || {};
 
-    // Definindo as propriedades a serem exibidas
-    const { title, description, price, creator, maybeAssigned } = content;
-
-    // Estado para verificar se o usuário já assinou
     const [isSigned, setIsSigned] = useState(false);
-    // Estado para manter a lista de usuários que se inscreveram
-    const [assignedUsers, setAssignedUsers] = useState(maybeAssigned || []);
+    const [assignedUsers, setAssignedUsers] = useState(assigned);
+    const [maybeAssignedUsers, setMaybeAssignedUsers] = useState(maybeAssigned);
 
-    // Função para lidar com o clique no botão de assinatura
+    useEffect(() => {
+        if (content) {
+            setIsSigned(maybeAssigned.includes(userName));
+            setAssignedUsers(assigned);
+            setMaybeAssignedUsers(maybeAssigned);
+        }
+    }, [assigned, maybeAssigned, userName, content]);
+
     const handleSign = async () => {
         if (isSigned) return;
 
         try {
-            // Atualize o estado local
-            setIsSigned(true);
+            // Add user to maybeAssigned list
+            const newMaybeAssigned = [...maybeAssignedUsers, userName];
+            setMaybeAssignedUsers(newMaybeAssigned);
 
-            // Atualize a lista no backend
             await axios.post(`http://localhost:5000/updateMaybeAssigned/${title}`, {
-                maybeAssigned: [...assignedUsers, userName], // Usa userName passado como prop
+                maybeAssigned: newMaybeAssigned,
             });
 
-            // Atualize o estado local para refletir a mudança
-            setAssignedUsers([...assignedUsers, userName]);
+            setIsSigned(true);
 
-            // Notifique o componente pai sobre a atualização
             if (onUpdate) onUpdate();
         } catch (error) {
             console.error('Error signing job:', error);
-            // Lógica para lidar com o erro
         }
     };
 
-    // Exemplo de descrição truncada
+    const handleAssignUser = async (user) => {
+        if (userName !== creator) {
+            console.error('Only the creator can assign users.');
+            return;
+        }
+
+        const newAssigned = [...assignedUsers, user];
+        const newMaybeAssigned = maybeAssignedUsers.filter(item => item !== user);
+
+        setAssignedUsers(newAssigned);
+        setMaybeAssignedUsers(newMaybeAssigned);
+
+        try {
+            await axios.post(`http://localhost:5000/updateAssigned/${title}`, {
+                assigned: newAssigned,
+            });
+
+            await axios.post(`http://localhost:5000/updateMaybeAssigned/${title}`, {
+                maybeAssigned: newMaybeAssigned,
+            });
+
+            if (onUpdate) onUpdate();
+        } catch (error) {
+            console.error('Error assigning user:', error);
+        }
+    };
+
     const truncatedDescription = description ? description.substring(0, 500) : 'Descrição não disponível';
+
+    if (!content || typeof content !== 'object') {
+        console.error('Invalid content:', content);
+        return <p>Conteúdo inválido</p>;
+    }
 
     return (
         <div className="jobsCard">
             <h2>{title || 'Título não disponível'}</h2>
-            <p>{truncatedDescription}... <strong>ler mais</strong></p>
+            <p>
+                {truncatedDescription}... <strong>ler mais</strong>
+            </p>
             <div className="Creator">
-                <p>Criado por : {creator || 'Conta não disponível'}</p>
+                <p>Criado por: {creator || 'Conta não disponível'}</p>
                 <div className="moneyName">
-                    <p className="reward-job-card"><strong>Recompensa :</strong></p>
+                    <p className="reward-job-card"><strong>Recompensa:</strong></p>
                     <p>💲{price || 'Preço não disponível'} ETH</p>
                     <button onClick={handleSign} disabled={isSigned}>
                         {isSigned ? 'Assinado' : 'Assinar'}
                     </button>
                 </div>
-                <div>Usuários inscritos: {assignedUsers.join(', ')}</div>
+                <div>
+                    <h4>Maybe Assigned</h4>
+                    <ul>
+                        {maybeAssignedUsers.map((user, index) => (
+                            <li key={index}>
+                                {user}
+                                {userName && userName !== creator && (
+                                    <button onClick={() => handleSign()}>Add to Maybe Assigned</button>
+                                )}
+                                {userName === creator && (
+                                    <button onClick={() => handleAssignUser(user)}>Assign</button>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h4>Assigned</h4>
+                    <ul>
+                        {assignedUsers.map((user, index) => (
+                            <li key={index}>{user}</li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );

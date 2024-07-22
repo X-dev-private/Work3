@@ -156,6 +156,44 @@ app.post('/updateMaybeAssigned/:title', async (req, res) => {
   }
 });
 
+// Endpoint para atualizar o campo assigned de um trabalho
+app.post('/updateAssigned/:title', async (req, res) => {
+  const { title } = req.params;
+  const { assigned } = req.body;
+
+  if (!Array.isArray(assigned)) {
+    return res.status(400).send('Invalid assigned format');
+  }
+
+  const params = {
+    Bucket: 'us-wk3-user',
+    Key: `jobs/${title}.json`, // A chave do trabalho no S3
+  };
+
+  try {
+    // Obtém os dados atuais do trabalho
+    const data = await s3.getObject(params).promise();
+    const jobData = JSON.parse(data.Body.toString('utf-8'));
+
+    // Atualiza o campo assigned
+    jobData.assigned = assigned;
+
+    // Salva os dados atualizados no S3
+    const uploadParams = {
+      Bucket: 'us-wk3-user',
+      Key: params.Key,
+      Body: JSON.stringify(jobData),
+      ContentType: 'application/json',
+    };
+
+    await s3.upload(uploadParams).promise();
+    res.status(200).send('Job updated successfully');
+  } catch (error) {
+    console.error('Error updating job:', error);
+    res.status(500).send('Failed to update job');
+  }
+});
+
 // Endpoint para upload de perfil com imagem no JSON
 app.post('/uploadProfile', async (req, res) => {
   const { account, userName, userDescription, profileImage, date1 } = req.body;

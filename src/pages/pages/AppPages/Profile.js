@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderApp from "../../libs/Header/HeaderApp";
 import "../../../Styles/GlobalPages.css";
 import logoImage from '../../../Styles/Images/guest.jpg';
@@ -13,6 +13,25 @@ const Profile = () => {
     const [userDescription, setUserDescription] = useState("conte - nos sobre voce");
     const [profileImage, setProfileImage] = useState(logoImage);
     const [date1, setDate1] = useState("");
+    const [bounties, setBounties] = useState([]); 
+    const [userCreatedBounties, setUserCreatedBounties] = useState([]);
+
+    useEffect(() => {
+        const fetchBounties = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/jobs');
+                setBounties(response.data);
+            } catch (error) {
+                console.error('Error fetching bounties:', error);
+            }
+        };
+
+        fetchBounties();
+    }, []);
+
+    useEffect(() => {
+        setUserCreatedBounties(bounties.filter(bounty => bounty.creator === userName));
+    }, [bounties, userName]);
 
     const handleUserNameChange = (event) => {
         setUserName(event.target.value);
@@ -31,8 +50,8 @@ const Profile = () => {
             account,
             userName,
             userDescription,
-            profileImage,  // Ajustado para corresponder ao backend
-            date1: moment().toISOString()  // Convertendo a data para o formato ISO
+            profileImage,
+            date1: moment().toISOString()
         };
 
         try {
@@ -54,8 +73,21 @@ const Profile = () => {
     const receiveUserInfo = (userInfo) => {
         setUserName(userInfo.userName);
         setUserDescription(userInfo.userDescription);
-        setProfileImage(userInfo.profileImage || logoImage); // Ajustado para corresponder ao backend
-        setDate1(userInfo.date1 ? moment(userInfo.date1).format('DD/MM/YYYY, HH:mm:ss') : '');  // Convertendo a data recebida para o formato desejado
+        setProfileImage(userInfo.profileImage || logoImage);
+        setDate1(userInfo.date1 ? moment(userInfo.date1).format('DD/MM/YYYY, HH:mm:ss') : '');
+    };
+
+    const handleUpdateAssigned = async (title, assigned) => {
+        try {
+            const response = await axios.post(`http://localhost:5000/updateAssigned/${title}`, { assigned }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Assigned updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating assigned:', error);
+        }
     };
 
     return (
@@ -66,7 +98,7 @@ const Profile = () => {
                     <section className="aboutUser">
                         <section className="user-data">
                             <div className="meta-user">
-                                <img src={profileImage} alt="Profile" />  {/* Alterado para profileImage */}
+                                <img src={profileImage} alt="Profile" />
                                 <MDropzone onDropImage={handleDropImage} />
                                 <h2 className="user-name">
                                     <input 
@@ -88,11 +120,30 @@ const Profile = () => {
                     <div className="user-bounties">
                         <section className="userJobs">
                             <h2>bounties trabalhadas</h2>
-                            <BountiesCard />
+                            {bounties.map((bounty, index) => (
+                                <BountiesCard 
+                                    key={index}
+                                    content={bounty}
+                                    userName={userName}
+                                    creator={bounty.creator}  // Pass creator info to BountiesCard
+                                />
+                            ))}
                         </section>
                         <section className="userJobs">
                             <h2>bounties Criadas</h2>
-                            <BountiesCard />
+                            {userCreatedBounties.length > 0 ? (
+                                userCreatedBounties.map((bounty, index) => (
+                                    <BountiesCard 
+                                        key={index}
+                                        content={bounty}
+                                        userName={userName}
+                                        creator={userName}  // Pass current user as creator
+                                        onUpdateAssigned={handleUpdateAssigned}
+                                    />
+                                ))
+                            ) : (
+                                <p>Nenhuma bounty criada.</p>
+                            )}
                         </section>
                     </div>
                 </div>
