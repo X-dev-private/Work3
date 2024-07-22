@@ -234,6 +234,12 @@ header.headerApp {
 
 /*Creater Jobs*/
 
+.jobsCard_create {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .jobsCard h2 input[type="text"] {
   font-size: inherit;
   font-weight: inherit;
@@ -253,6 +259,10 @@ header.headerApp {
   height: auto;
   overflow: hidden;
   min-height: 100px;
+}
+
+.modified-create {
+  margin: 32px;
 }
 
 

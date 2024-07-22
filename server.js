@@ -25,23 +25,30 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-// Endpoint existente para listar objetos
-app.get('/list', async (req, res) => {
+// Endpoint para listar objetos na pasta 'jobs'
+app.get('/jobs', async (req, res) => {
   const params = {
     Bucket: 'us-wk3-user',
+    Prefix: 'jobs/', // Lista todos os arquivos na pasta 'jobs'
   };
 
   try {
     const data = await s3.listObjectsV2(params).promise();
-    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
-    res.json(data.Contents);
+    const jobs = await Promise.all(
+      data.Contents.map(async (item) => {
+        const objectData = await s3.getObject({ Bucket: params.Bucket, Key: item.Key }).promise();
+        return JSON.parse(objectData.Body.toString('utf-8'));
+      })
+    );
+    res.setHeader('Content-Type', 'application/json');
+    res.json(jobs);
   } catch (error) {
-    console.error('Error listing objects:', error);
-    res.status(500).send('Failed to list objects');
+    console.error('Failed to fetch jobs:', error);
+    res.status(500).send('Failed to fetch jobs');
   }
 });
 
-// Endpoint existente para obter um objeto
+// Endpoint para obter um objeto específico
 app.get('/object/:key', async (req, res) => {
   const { key } = req.params;
 
@@ -52,14 +59,100 @@ app.get('/object/:key', async (req, res) => {
 
   try {
     const data = await s3.getObject(params).promise();
-    // Define o Content-Type com base na extensão do arquivo
     const ext = key.split('.').pop();
     const contentType = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : 'image/png';
     res.setHeader('Content-Type', contentType);
-    res.send(data.Body); // Envia o buffer diretamente
+    res.send(data.Body);
   } catch (error) {
     console.error('Failed to fetch object content:', error);
     res.status(500).send('Failed to fetch object content');
+  }
+});
+
+// Endpoint para upload de dados de trabalho
+app.post('/upload', async (req, res) => {
+  const { title, description, price, date, maybeAssigned, assigned, completed, creator } = req.body;
+
+  console.log('Received job data:', { title, description, price, date, maybeAssigned, assigned, completed, creator });
+
+  let dateIso;
+  try {
+    const dateObj = new Date(date);
+    if (isNaN(dateObj)) {
+      throw new Error('Invalid date format');
+    }
+    dateIso = dateObj.toISOString();
+  } catch (error) {
+    console.error('Invalid date format:', date);
+    return res.status(400).send('Invalid date format');
+  }
+
+  // Cria o objeto de dados de trabalho
+  const jobData = {
+    title,
+    description,
+    price,
+    date: dateIso,
+    maybeAssigned, // Novo campo
+    assigned,     // Novo campo
+    completed,    // Novo campo
+    creator       // Novo campo
+  };
+
+  // Armazena os dados de trabalho no S3 diretamente na pasta 'jobs'
+  const jobParams = {
+    Bucket: 'us-wk3-user',
+    Key: `jobs/${title}.json`, // Armazena diretamente na pasta 'jobs'
+    Body: JSON.stringify(jobData),
+    ContentType: 'application/json',
+  };
+
+  try {
+    console.log('Attempting to upload job data to S3 with params:', jobParams);
+    const result = await s3.upload(jobParams).promise();
+    console.log('Job data upload successful:', result);
+    res.status(200).send('Job data uploaded successfully');
+  } catch (error) {
+    console.error('Error uploading job data to S3:', error);
+    res.status(500).send('Failed to upload job data');
+  }
+});
+
+// Endpoint para atualizar o campo maybeAssigned de um trabalho
+app.post('/updateMaybeAssigned/:title', async (req, res) => {
+  const { title } = req.params;
+  const { maybeAssigned } = req.body;
+
+  if (!Array.isArray(maybeAssigned)) {
+    return res.status(400).send('Invalid maybeAssigned format');
+  }
+
+  const params = {
+    Bucket: 'us-wk3-user',
+    Key: `jobs/${title}.json`, // A chave do trabalho no S3
+  };
+
+  try {
+    // Obtém os dados atuais do trabalho
+    const data = await s3.getObject(params).promise();
+    const jobData = JSON.parse(data.Body.toString('utf-8'));
+
+    // Atualiza o campo maybeAssigned
+    jobData.maybeAssigned = maybeAssigned;
+
+    // Salva os dados atualizados no S3
+    const uploadParams = {
+      Bucket: 'us-wk3-user',
+      Key: params.Key,
+      Body: JSON.stringify(jobData),
+      ContentType: 'application/json',
+    };
+
+    await s3.upload(uploadParams).promise();
+    res.status(200).send('Job updated successfully');
+  } catch (error) {
+    console.error('Error updating job:', error);
+    res.status(500).send('Failed to update job');
   }
 });
 
@@ -67,7 +160,7 @@ app.get('/object/:key', async (req, res) => {
 app.post('/uploadProfile', async (req, res) => {
   const { account, userName, userDescription, profileImage, date1 } = req.body;
 
-  console.log('Received date1:', date1); // Log para ver o valor de date1
+  console.log('Received profile data:', { account, userName, userDescription, profileImage, date1 });
 
   let date1Iso;
   try {
@@ -81,29 +174,25 @@ app.post('/uploadProfile', async (req, res) => {
     return res.status(400).send('Invalid date format');
   }
 
-  // Converte a imagem base64 para buffer usando sharp
   const base64Data = profileImage.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, 'base64');
 
   try {
     const processedImage = await sharp(buffer)
       .resize({ width: 200, height: 200 })
-      .png() // Alterado para PNG
+      .png()
       .toBuffer();
 
-    // Converte o buffer de volta para base64
     const base64Image = `data:image/png;base64,${processedImage.toString('base64')}`;
 
-    // Atualiza o perfil do usuário com a imagem codificada em base64
     const userProfile = {
       account,
       userName,
       userDescription,
-      profileImage: base64Image, // Imagem codificada em base64
+      profileImage: base64Image,
       date1: date1Iso
     };
 
-    // Armazena o perfil do usuário no S3
     const profileParams = {
       Bucket: 'us-wk3-user',
       Key: `users/${account}.json`,
@@ -138,7 +227,7 @@ app.get('/userInfo/:account', async (req, res) => {
   try {
     const data = await s3.getObject(params).promise();
     const userProfile = JSON.parse(data.Body.toString('utf-8'));
-    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
+    res.setHeader('Content-Type', 'application/json');
     res.json(userProfile);
   } catch (error) {
     console.error('Failed to fetch user profile:', error);
@@ -148,9 +237,9 @@ app.get('/userInfo/:account', async (req, res) => {
 
 // Endpoint para upload de informações DAO com imagem no JSON
 app.post('/uploadDao', async (req, res) => {
-  const { daoName, daoDescription, daoLogo, date1, accountModerator, accountUser } = req.body;
+  const { daoName, daoDescription, daoLogo, date1, accountManager, accountUser } = req.body;
 
-  console.log('Received DAO info:', { daoName, daoDescription, daoLogo, date1, accountModerator, accountUser }); // Log para ver as informações recebidas
+  console.log('Received DAO info:', { daoName, daoDescription, daoLogo, date1, accountManager, accountUser });
 
   let date1Iso;
   try {
@@ -164,33 +253,29 @@ app.post('/uploadDao', async (req, res) => {
     return res.status(400).send('Invalid date format');
   }
 
-  // Converte a imagem base64 para buffer usando sharp
   const base64Data = daoLogo.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, 'base64');
 
   try {
     const processedImage = await sharp(buffer)
       .resize({ width: 200, height: 200 })
-      .png() // Alterado para PNG
+      .png()
       .toBuffer();
 
-    // Converte o buffer de volta para base64
     const base64Image = `data:image/png;base64,${processedImage.toString('base64')}`;
 
-    // Atualiza as informações DAO com a imagem codificada em base64
     const daoProfile = {
       daoName,
       daoDescription,
-      logo: base64Image, // Imagem codificada em base64
+      logo: base64Image,
       date1: date1Iso,
-      accountModerator,
+      accountManager,
       accountUser
     };
 
-    // Armazena as informações DAO no S3
     const daoParams = {
       Bucket: 'us-wk3-user',
-      Key: `Dao/${daoName}.json`, // Usa daoName para o nome do arquivo
+      Key: `Dao/${daoName}.json`,
       Body: JSON.stringify(daoProfile),
       ContentType: 'application/json',
     };
@@ -222,11 +307,34 @@ app.get('/getDaoInfo/:daoName', async (req, res) => {
   try {
     const data = await s3.getObject(params).promise();
     const daoProfile = JSON.parse(data.Body.toString('utf-8'));
-    res.setHeader('Content-Type', 'application/json'); // Define o Content-Type como JSON
+    res.setHeader('Content-Type', 'application/json');
     res.json(daoProfile);
   } catch (error) {
     console.error('Failed to fetch DAO profile:', error);
     res.status(500).send('Failed to fetch DAO profile');
+  }
+});
+
+// Novo endpoint para obter informações de todos os DAOs
+app.get('/getAllDaoInfo', async (req, res) => {
+  const params = {
+    Bucket: 'us-wk3-user',
+    Prefix: 'Dao/',
+  };
+
+  try {
+    const data = await s3.listObjectsV2(params).promise();
+    const daoProfiles = await Promise.all(
+      data.Contents.map(async (item) => {
+        const objectData = await s3.getObject({ Bucket: params.Bucket, Key: item.Key }).promise();
+        return JSON.parse(objectData.Body.toString('utf-8'));
+      })
+    );
+    res.setHeader('Content-Type', 'application/json');
+    res.json(daoProfiles);
+  } catch (error) {
+    console.error('Failed to fetch all DAO profiles:', error);
+    res.status(500).send('Failed to fetch all DAO profiles');
   }
 });
 

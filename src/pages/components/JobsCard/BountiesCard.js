@@ -1,65 +1,66 @@
-import React from "react";
-import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
+import React, { useState } from 'react';
+import axios from 'axios';
 import "../../../Styles/GlobalComponents.css";
 
-const BountiesCard = ({ content }) => {
-    // Verificar se o conteúdo existe e é uma string válida
-    if (!content || typeof content !== 'string') {
+const BountiesCard = ({ content, userName, onUpdate }) => {
+    // Verifica se o conteúdo existe e é um objeto válido
+    if (!content || typeof content !== 'object') {
         console.error('Invalid content:', content);
         return <p>Conteúdo inválido</p>; // Ou outro fallback adequado
     }
 
-    let obj;
-    try {
-        obj = JSON.parse(content);
-    } catch (error) {
-        console.error('Failed to parse object content:', error);
-        return <p>Falha ao analisar o conteúdo do objeto</p>; // Ou outro fallback adequado
-    }
-
     // Definindo as propriedades a serem exibidas
-    const { title, description, price, account } = obj;
+    const { title, description, price, creator, maybeAssigned } = content;
 
-    // Exemplo de cálculo de diferença de data, mantido para referência
-    const date1 = new Date('2024-07-10T10:00:00');
-    const date2 = new Date();
-    const diffMinutes = differenceInMinutes(date2, date1);
-    const diffHours = differenceInHours(date2, date1);
-    const diffDays = differenceInDays(date2, date1);
-    const diffYears = differenceInYears(date2, date1);
+    // Estado para verificar se o usuário já assinou
+    const [isSigned, setIsSigned] = useState(false);
+    // Estado para manter a lista de usuários que se inscreveram
+    const [assignedUsers, setAssignedUsers] = useState(maybeAssigned || []);
 
-    let diffText;
-    if (diffYears > 0) {
-        diffText = `${diffYears} ano(s) atrás`;
-    } else if (diffDays > 0) {
-        diffText = `${diffDays} dia(s) atrás`;
-    } else if (diffHours > 0) {
-        diffText = `${diffHours} hora(s) atrás`;
-    } else {
-        diffText = `${diffMinutes} minuto(s) atrás`;
-    }
+    // Função para lidar com o clique no botão de assinatura
+    const handleSign = async () => {
+        if (isSigned) return;
 
-    // Exemplo de descrição truncada, mantido para referência
-    const truncatedDescription = description.substring(0, 500);
+        try {
+            // Atualize o estado local
+            setIsSigned(true);
+
+            // Atualize a lista no backend
+            await axios.post(`http://localhost:5000/updateMaybeAssigned/${title}`, {
+                maybeAssigned: [...assignedUsers, userName], // Usa userName passado como prop
+            });
+
+            // Atualize o estado local para refletir a mudança
+            setAssignedUsers([...assignedUsers, userName]);
+
+            // Notifique o componente pai sobre a atualização
+            if (onUpdate) onUpdate();
+        } catch (error) {
+            console.error('Error signing job:', error);
+            // Lógica para lidar com o erro
+        }
+    };
+
+    // Exemplo de descrição truncada
+    const truncatedDescription = description ? description.substring(0, 500) : 'Descrição não disponível';
 
     return (
         <div className="jobsCard">
-            <h2>{title}</h2>
+            <h2>{title || 'Título não disponível'}</h2>
             <p>{truncatedDescription}... <strong>ler mais</strong></p>
             <div className="Creator">
-                <p>Criado por : {account}</p> {/* Exemplo de exibição de conta do criador */}
+                <p>Criado por : {creator || 'Conta não disponível'}</p>
                 <div className="moneyName">
                     <p className="reward-job-card"><strong>Recompensa :</strong></p>
-                    <p>💲{price}</p> {/* Exemplo de exibição de preço */}
+                    <p>💲{price || 'Preço não disponível'} ETH</p>
+                    <button onClick={handleSign} disabled={isSigned}>
+                        {isSigned ? 'Assinado' : 'Assinar'}
+                    </button>
                 </div>
-            </div>
-            <div className="data">
-                <p>Criado em : {date1.toLocaleString()}</p>
-                <p>há {diffText}</p>
+                <div>Usuários inscritos: {assignedUsers.join(', ')}</div>
             </div>
         </div>
     );
 };
 
 export default BountiesCard;
-
