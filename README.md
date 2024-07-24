@@ -8,4 +8,6 @@ run application : "npm start" or "yarn start"
 
 ## run server
 
-node server.js
+npm run local
+
+npm run sv
