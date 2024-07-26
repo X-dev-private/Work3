@@ -2,8 +2,8 @@ import React from "react";
 import { differenceInMinutes, differenceInHours, differenceInDays, differenceInYears } from 'date-fns';
 import "../../../Styles/GlobalComponents.css";
 
-const DaoCard = ({ dao }) => {
-    const { daoName, daoDescription, logo, date1 } = dao;
+const UserCard = ({ profile }) => {
+    const { userName, userDescription, profileImage, date1 } = profile;
 
     const dateObj = new Date(date1);
     const date2 = new Date();
@@ -24,15 +24,15 @@ const DaoCard = ({ dao }) => {
         diffText = `${diffMinutes} minuto(s) atrás`;
     }
 
-    const truncatedDescription = daoDescription.substring(0, 300);
+    const truncatedDescription = userDescription.substring(0, 300);
 
     return (
-        <div className="daoCard">
-            <div className="daoCard_title">
-                <h2>{daoName}</h2>
+        <div className="userCard">
+            <div className="userCard_title">
+                <h2>{userName}</h2>
             </div>
-            <div className="daoCard_image">
-                <img src={`data:image/png;base64,${logo.split(',')[1]}`} alt={daoName} />
+            <div className="userCard_image">
+                <img src={profileImage} alt={userName} />
             </div>
             <p>{truncatedDescription}... <strong>ler mais</strong></p>
             <div className="data">
@@ -43,4 +43,4 @@ const DaoCard = ({ dao }) => {
     );
 };
 
-export default DaoCard;
+export default UserCard;

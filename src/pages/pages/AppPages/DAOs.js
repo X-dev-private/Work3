@@ -10,7 +10,7 @@ const DAOs = () => {
     useEffect(() => {
         const fetchDaos = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/getAllDaoInfo'); // Atualize a URL se necessário
+                const response = await axios.get('http://localhost:5000/getAllDaoInfo'); // Ensure this matches your backend
                 setDaos(response.data);
             } catch (error) {
                 console.error('Error fetching DAOs:', error);
@@ -21,18 +21,20 @@ const DAOs = () => {
     }, []);
 
     return (
-        <main>
-            <main className="mainApp">
-                <HeaderApp />
-                <div className="mainAppPage">
-                    <Sidebar />
-                    <div className="jobs-card-container">
-                        {daos.map((dao, index) => (
+        <main className="mainApp">
+            <HeaderApp />
+            <div className="mainAppPage">
+                <Sidebar />
+                <div className="jobs-card-container">
+                    {daos.length > 0 ? (
+                        daos.map((dao, index) => (
                             <DaoCard key={index} dao={dao} />
-                        ))}
-                    </div>
+                        ))
+                    ) : (
+                        <p>No DAOs available</p>
+                    )}
                 </div>
-            </main>
+            </div>
         </main>
     );
 };
