@@ -14,7 +14,7 @@ const MyDao = () => {
     const [date1, setDate1] = useState("");
     const [accountModerator, setAccountModerator] = useState([]);
     const [accountUser, setAccountUser] = useState([]);
-    const [isModeratorSet, setIsModeratorSet] = useState(false); // Novo estado para verificar se o moderador foi definido
+    const [isModeratorSet, setIsModeratorSet] = useState(false);
 
     const handleDaoNameChange = (event) => {
         setDaoName(event.target.value);
@@ -32,8 +32,8 @@ const MyDao = () => {
         const daoProfile = {
             daoName,
             daoDescription,
-            daoLogo: logo, // Ajustado para daoLogo
-            date1: moment(date1, 'DD/MM/YYYY, HH:mm:ss').toISOString(), // Certifica-se de que a data esteja no formato ISO
+            daoLogo: logo,
+            date1: moment(date1, 'DD/MM/YYYY, HH:mm:ss').toISOString(),
             accountModerator,
             accountUser
         };
@@ -52,10 +52,10 @@ const MyDao = () => {
 
     const receiveAccount = (acc) => {
         if (!isModeratorSet) {
-            setAccountModerator([acc]); // Define o primeiro account como moderador
-            setIsModeratorSet(true); // Marca que o moderador foi definido
+            setAccountModerator([acc]);
+            setIsModeratorSet(true);
         } else {
-            setAccountModerator(prevMods => [...prevMods, acc]); // Adiciona os seguintes accounts
+            setAccountModerator(prevMods => [...prevMods, acc]);
         }
     };
 

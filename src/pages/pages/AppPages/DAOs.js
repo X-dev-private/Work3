@@ -10,7 +10,7 @@ const DAOs = () => {
     useEffect(() => {
         const fetchDaos = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/getAllDaoInfo'); // Ensure this matches your backend
+                const response = await axios.get('http://localhost:5000/daos'); // Certifique-se de que essa URL corresponde à do backend
                 setDaos(response.data);
             } catch (error) {
                 console.error('Error fetching DAOs:', error);

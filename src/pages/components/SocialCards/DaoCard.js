@@ -26,19 +26,21 @@ const DaoCard = ({ dao }) => {
 
     const truncatedDescription = daoDescription.substring(0, 300);
 
+    const imageUrl = logo?.startsWith("data:image") ? logo : "fallback-image-url.png";
+
     return (
         <div className="daoCard">
-            <div className="daoCard_title">
-                <h2>{daoName}</h2>
-            </div>
-            <div className="daoCard_image">
-                <img src={`data:image/png;base64,${logo.split(',')[1]}`} alt={daoName} />
-            </div>
-            <p>{truncatedDescription}... <strong>ler mais</strong></p>
-            <div className="data">
-                <p>Criado em: {dateObj.toLocaleString()}</p>
-                <p>há {diffText}</p>
-            </div>
+                <div className="daoCard_title">
+                    <h2>{daoName}</h2>
+                </div>
+                <div className="daoCard_image">
+                    <img src={imageUrl} alt={daoName} />
+                </div>
+                <p>{truncatedDescription}... <strong>ler mais</strong></p>
+                <div className="data">
+                    <p>Criado em: {dateObj.toLocaleString()}</p>
+                    <p>há {diffText}</p>
+                </div>
         </div>
     );
 };

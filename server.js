@@ -300,7 +300,7 @@ app.get('/getAllUserInfo', async (req, res) => {
 app.get('/daos', async (req, res) => {
   const params = {
     Bucket: 'us-wk3-user',
-    Prefix: 'daos/', // Lista todos os arquivos na pasta 'daos'
+    Prefix: 'Dao/', // Lista todos os arquivos na pasta 'daos'
   };
 
   try {
@@ -325,7 +325,7 @@ app.get('/dao/:key', async (req, res) => {
 
   const params = {
     Bucket: 'us-wk3-user',
-    Key: `daos/${key}.json`, // Chave para o DAO específico
+    Key: `Dao/${key}.json`, // Chave para o DAO específico
   };
 
   try {
@@ -336,6 +336,66 @@ app.get('/dao/:key', async (req, res) => {
   } catch (error) {
     console.error('Failed to fetch dao content:', error);
     res.status(500).send('Failed to fetch dao content');
+  }
+});
+
+// Endpoint para upload de perfil da DAO
+app.post('/uploadDao', async (req, res) => {
+  const { daoName, daoDescription, daoLogo, date1, accountModerator, accountUser } = req.body;
+
+  console.log('Received DAO profile data:', { daoName, daoDescription, daoLogo, date1, accountModerator, accountUser });
+
+  let date1Iso;
+  try {
+    const dateObj = new Date(date1);
+    if (isNaN(dateObj)) {
+      throw new Error('Invalid date format');
+    }
+    date1Iso = dateObj.toISOString();
+  } catch (error) {
+    console.error('Invalid date format:', date1);
+    return res.status(400).send('Invalid date format');
+  }
+
+  const base64Data = daoLogo.replace(/^data:image\/\w+;base64,/, "");
+  const buffer = Buffer.from(base64Data, 'base64');
+
+  try {
+    const processedImage = await sharp(buffer)
+      .resize({ width: 200, height: 200 })
+      .png()
+      .toBuffer();
+
+    const base64Image = `data:image/png;base64,${processedImage.toString('base64')}`;
+
+    const daoProfile = {
+      daoName,
+      daoDescription,
+      daoLogo: base64Image,
+      date1: date1Iso,
+      accountModerator,
+      accountUser
+    };
+
+    const profileParams = {
+      Bucket: 'us-wk3-user',
+      Key: `Dao/${daoName}.json`,
+      Body: JSON.stringify(daoProfile),
+      ContentType: 'application/json',
+    };
+
+    try {
+      console.log('Attempting to upload DAO profile to S3 with params:', profileParams);
+      const result = await s3.upload(profileParams).promise();
+      console.log('DAO profile upload successful:', result);
+      res.status(200).send('DAO profile uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading DAO profile to S3:', error);
+      res.status(500).send('Failed to upload DAO profile');
+    }
+  } catch (error) {
+    console.error('Error processing image:', error);
+    res.status(500).send('Error processing image');
   }
 });
 
